@@ -1,3 +1,5 @@
 from django.contrib import admin
+from .models import opintojaksot, valitut_kurssit
 
-# Register your models here.
+admin.site.register(opintojaksot)
+admin.site.register(valitut_kurssit)

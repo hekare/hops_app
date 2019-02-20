@@ -24,6 +24,13 @@
                               <li class="nav-item">
                                           <a class="nav-link" href={% url 'lista' %}>Lista</a>
                                     </li>
+                              {% if perms.poll.change_poll %}
+                              {% if perms.poll.delete_poll %}
+                              <li class="nav-item">
+                                    <a class="nav-link" href={% url 'load_data' %}>Lataa data</a>
+                              </li>
+                              {% endif %}
+                              {% endif %}
                               <!--li class="nav-item dropdown">
                                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     Dropdown

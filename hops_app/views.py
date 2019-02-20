@@ -44,8 +44,8 @@ def home(request):
 
 @login_required(login_url='/')
 def aikataulu(request):
-      return render(request, 'home.html', {})
+      return render(request, 'schedule_view.html', {})
 
 @login_required(login_url='/')
 def lista(request):
-      return render(request, 'home.html', {})
+      return render(request, 'list_view.html', {})
