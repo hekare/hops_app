@@ -6,6 +6,8 @@ class opintojaksot (models.Model):
       nimi = models.TextField()
       nopat_min = models.IntegerField()
       nopat_max = models.IntegerField()
+      tutkinto_ohjelma = models.CharField(max_length=20)
+      oppiaine = models.CharField(max_length=20)
 
 class periodit (models.Model):
       opintojakso = models.CharField(max_length=20, primary_key=True) #opintojakson tunniste
@@ -15,10 +17,3 @@ class periodit (models.Model):
       periodi4 = models.BooleanField(default=False)
       periodi5 = models.BooleanField(default=False)
 
-class tutkinto_ohjelmat (models.Model):
-      koodi = models.CharField(max_length=20, primary_key=True) #tutkinto-ohjelman koodi
-      opintojakso = models.CharField(max_length=20,) #opintojakson tunniste
-
-class oppi_aineet (models.Model):
-      koodi = models.CharField(max_length=20, primary_key=True) #oppiaineen koodi
-      opintojakso = models.CharField(max_length=20) #opintojakson tunniste
