@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div class="d-flex justify-content-center">
+
+      <div class="px-2">
+      <div class="card" style="width: 60rem;">
+            <h5 class="card-header">Tervetuloa HOPS työkaluun</h5>
+            <div class="card-body">
+                  <p>Jotain tekstiä sitten tähän.</p>
+            </div>
+      </div>
+      </div>
+
+      <div class="px-2">
+      <div class="card" style="width: 25rem;">
+            <h5 class="card-header">Kirjaudu sisään</h5>
+            <div class="card-body">
+                  <form method='POST'>
+                        {% csrf_token %}
+                        <label for="username">Username:</label>
+                        <input type="text" name="username" placeholder="Username">
+                        <label for="password">Password:</label>
+                        <input type="password" name="password" placeholder="Password">
+                        <button class="btn btn-success my-2" type='submit'>Kirjaudu</button><br>
+                        <a href="{% url 'register' %}">Rekisteröidy uutena käyttäjänä</a>
+                  </form>
+            </div>
+      </div>
+      </div>
+
+</div>
+{% endblock %}
