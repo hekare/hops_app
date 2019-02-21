@@ -11,13 +11,12 @@ def load_data(request):
       secrets = json.load(secret_file)
       secret_file.close()
 
-      #datan haku apista
+      #Datan haku apista. Api palauttaa json-tiedoston kaikista keskustan kampuksen kursseista (tilanne 21.2.2019).
       headers = {'x-api-key':secrets['X-API-KEY']}
       response = requests.get("https://opendata.uta.fi:8443/apiman-gateway/UTA/opintojaksot/1.0/", headers=headers)
       data = response.json()
       
-      #datan siirto tietokantoihin
-      #print(data[1]['id'])
+      #datan siirto tietokantaan
       for kurssi in data:
             p1 = False
             p2 = False
@@ -36,6 +35,7 @@ def load_data(request):
                   if 5 in kurssi['studyPeriods']:
                         p5 = True 
 
+            #Tallenna tietokantaan, jos olemassa -> päivitä kentät
             opintojaksot.objects.update_or_create(
                   tunniste = kurssi['id'],
                   koodi = kurssi['code'],
