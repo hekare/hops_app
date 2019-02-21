@@ -3,6 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm
 from django.shortcuts import redirect, render
 from django.http import HttpResponseRedirect
+from .models import opintojaksot, valitut_kurssit
 
 
 def start_page (request):
@@ -48,4 +49,6 @@ def aikataulu(request):
 
 @login_required(login_url='/')
 def lista(request):
-      return render(request, 'list_view.html', {})
+      kaikki_kurssit = opintojaksot.objects.all().order_by('nimi')
+      args = {'kurssit': kaikki_kurssit}
+      return render(request, 'list_view.html', args)
