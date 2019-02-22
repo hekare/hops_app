@@ -25,6 +25,7 @@ class valitut_kurssit (models.Model):
       periodi = models.IntegerField(null=True)
       opinto_vuosi = models.IntegerField(null=True)
       def __str__(self):
-            return self.opiskelija
+            return self.opiskelija.username
       class Meta:
             verbose_name_plural = "Valitut kurssit"
+            unique_together = (("opiskelija", "kurssi"),)

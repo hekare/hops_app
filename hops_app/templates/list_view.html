@@ -8,11 +8,30 @@
 
 <div class="d-flex justify-content-center">
       <div class="px-2">
-      <div class="card" style="width: 60rem;">
-            <h5 class="card-header">Valitsemasi kurssit</h5>
-            <div class="card-body">
+            {% if lisays_onnistui == True%}
+            <div class="card" style="width: 60rem;">
+                  <h5 class="card-header text-center bg-success">Kurssi lisätty omiin kursseihin</h5>
             </div>
-      </div>
+            <br>
+            {% elif lisays_onnistui == False %}
+                  <div class="card" style="width: 60rem;">
+                        <h5 class="card-header text-center bg-danger">Kurssi on jo omissa kursseissa</h5>
+            </div>
+            <br>
+            {% endif %}
+
+            <div class="card" style="width: 60rem;">
+                  <h5 class="card-header">Valitsemasi kurssit</h5>
+                  <div class="card-body">
+                        <ul class="list-group list-group-flush" style="overflow:hidden; overflow-y:scroll;">                  
+                        {% for kurssi in valitut %}
+                        <li class="list-group-item p-2">
+                              <label class="align-middle pt-1" style="width: 18rem">{{kurssi.kurssi}}</label>
+                        </li>
+                        {% endfor %}
+                        </ul>
+                  </div>
+            </div>
       </div>
       <!--kurssien lisäyspaneeli-->
       {% include 'add_course.html' %}

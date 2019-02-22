@@ -1,6 +1,7 @@
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.models import User
 from django.shortcuts import redirect, render
 from django.http import HttpResponseRedirect, HttpResponse
 from .models import opintojaksot, valitut_kurssit
@@ -49,6 +50,10 @@ def aikataulu(request):
 
 @login_required(login_url='/')
 def lista(request):
+      haku = None
+      tuloksia = None
+      lisays_onnistui = None
+
       if request.method=="GET":
             query = request.GET.get("name_q")
             if query:
@@ -57,11 +62,19 @@ def lista(request):
                   tuloksia = len(kurssit)
             else:
                   kurssit = opintojaksot.objects.all().order_by('nimi')
-                  haku = None
-                  tuloksia = None
       elif request.method=="POST":
             add = request.POST.get("add")
-            
-            return HttpResponseRedirect('/list_view')
-      args = {'kurssit': kurssit, 'haku': haku, 'tuloksia': tuloksia}
+            try:
+                  valitut_kurssit.objects.create(opiskelija=request.user, kurssi=add)
+                  lisays_onnistui = True
+            except:
+                  lisays_onnistui = False
+            kurssit = opintojaksot.objects.all().order_by('nimi')
+      
+      valitut_opintojaksot = valitut_kurssit.objects.filter(opiskelija=request.user)
+      args={'kurssit': kurssit,
+            'haku': haku, 
+            'tuloksia': tuloksia, 
+            'lisays_onnistui': lisays_onnistui,
+            'valitut': valitut_opintojaksot}
       return render(request, 'list_view.html', args)
