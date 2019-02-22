@@ -56,15 +56,17 @@ def load_data(request):
       return HttpResponseRedirect('home')
 
 def remove_course(request):
-      kurssi_id = request.POST.get("remove")
-      valitut_kurssit.objects.filter(opiskelija=request.user, kurssi=kurssi_id).delete()
+      kurssi = request.POST.get("remove")
+      valitut_kurssit.objects.filter(opiskelija=request.user, kurssi=kurssi).delete()
       return HttpResponseRedirect("/list_view")
 
 def add_course(request):
       add = request.POST.get("add")
       try:
-            valitut_kurssit.objects.create(opiskelija=request.user, kurssi=request.POST.get('add'))
+            kurssi_id = request.POST.get('add')
+            kurssi = opintojaksot.objects.get(tunniste=kurssi_id)
+            valitut_kurssit.objects.create(opiskelija=request.user, kurssi=kurssi)
             url = "/list_view/?added=1"
       except:
-            url = "/list_view/?added=0"
+           url = "/list_view/?added=0"
       return HttpResponseRedirect(url)

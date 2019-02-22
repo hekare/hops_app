@@ -40,7 +40,7 @@
                                     <div class="d-flex bd-highlight bd-highlight">
                                           {% csrf_token %}
                                           <label class="flex-grow-1 bd-highlight pt-2 m-0">{{kurssi.kurssi}}</label>
-                                          <button class="btn btn-outline-danger" name="remove" value={{kurssi.kurssi}}>Poista</button> 
+                                          <button class="btn btn-outline-danger" name="remove" value={{kurssi.kurssi.tunniste}}>Poista</button> 
                                     </div>
                               </form>
                         </li>

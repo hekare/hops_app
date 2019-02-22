@@ -21,7 +21,7 @@ class opintojaksot (models.Model):
 
 class valitut_kurssit (models.Model):
       opiskelija = models.ForeignKey(User, on_delete=models.CASCADE)
-      kurssi = models.CharField(max_length=20, null=True) #opintojakson id
+      kurssi = models.ForeignKey(opintojaksot, on_delete=models.CASCADE) #opintojakson id
       periodi = models.IntegerField(null=True)
       opinto_vuosi = models.IntegerField(null=True)
       def __str__(self):
