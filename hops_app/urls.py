@@ -8,5 +8,7 @@ urlpatterns = [
       path('home', views.home, name="home"),
       path('schedule_view/', views.aikataulu, name="aikataulu"),
       path('list_view/', views.lista, name="lista"),
+      path('list_view/remove', database.remove_course, name="remove_course"),
+      path('list_view/add', database.add_course, name="add_course"),
       path('load_data', database.load_data, name="load_data"),
 ]

@@ -1,6 +1,7 @@
 from django.http import HttpResponseRedirect
-from .models import opintojaksot
+from .models import opintojaksot, valitut_kurssit
 import json, requests
+from django.http import HttpResponseRedirect, HttpResponse
 
 def load_data(request):
       #Funktio lataa yliopistun opintojaksot rajapinnasta ja siirtää tiedot tietokantaan.
@@ -53,3 +54,17 @@ def load_data(request):
 
       print("Data updatet")
       return HttpResponseRedirect('home')
+
+def remove_course(request):
+      kurssi_id = request.POST.get("remove")
+      valitut_kurssit.objects.filter(opiskelija=request.user, kurssi=kurssi_id).delete()
+      return HttpResponseRedirect("/list_view")
+
+def add_course(request):
+      add = request.POST.get("add")
+      try:
+            valitut_kurssit.objects.create(opiskelija=request.user, kurssi=request.POST.get('add'))
+            url = "/list_view/?added=1"
+      except:
+            url = "/list_view/?added=0"
+      return HttpResponseRedirect(url)

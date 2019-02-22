@@ -15,7 +15,7 @@
             <ul class="list-group list-group-flush" style="overflow:hidden; overflow-y:scroll;">                  
                   {% for kurssi in kurssit %}
                   <li class="list-group-item p-2">
-                        <form action="" method="post">
+                        <form action="add" method="post">
                               {% csrf_token %}
                               <div class="form-goup">
                                     <button class="btn btn-outline-success align-middle mr-2" name="add" value={{kurssi.tunniste}}>+</button> 

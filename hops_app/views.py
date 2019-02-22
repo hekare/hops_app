@@ -50,30 +50,27 @@ def aikataulu(request):
 
 @login_required(login_url='/')
 def lista(request):
-      haku = None
+      hakusana = None
       tuloksia = None
       lisays_onnistui = None
 
-      if request.method=="GET":
-            query = request.GET.get("name_q")
+      if request.method =="GET":
+            query = request.GET.get("name_q")   
             if query:
-                  kurssit = opintojaksot.objects.filter(nimi__icontains=query)
-                  haku = query
-                  tuloksia = len(kurssit)
+                  haetut_kurssit = opintojaksot.objects.filter(nimi__icontains=query)
+                  hakusana = query
+                  tuloksia = len(haetut_kurssit)
             else:
-                  kurssit = opintojaksot.objects.all().order_by('nimi')
-      elif request.method=="POST":
-            add = request.POST.get("add")
-            try:
-                  valitut_kurssit.objects.create(opiskelija=request.user, kurssi=add)
-                  lisays_onnistui = True
-            except:
-                  lisays_onnistui = False
-            kurssit = opintojaksot.objects.all().order_by('nimi')
-      
+                  haetut_kurssit = opintojaksot.objects.all().order_by('nimi')
+
+      if request.GET.get("added") == "0":
+            lisays_onnistui = False
+      elif request.GET.get("added") == "1":
+            lisays_onnistui = True
+
       valitut_opintojaksot = valitut_kurssit.objects.filter(opiskelija=request.user)
-      args={'kurssit': kurssit,
-            'haku': haku, 
+      args={'kurssit': haetut_kurssit,
+            'haku': hakusana, 
             'tuloksia': tuloksia, 
             'lisays_onnistui': lisays_onnistui,
             'valitut': valitut_opintojaksot}

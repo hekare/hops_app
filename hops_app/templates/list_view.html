@@ -9,24 +9,40 @@
 <div class="d-flex justify-content-center">
       <div class="px-2">
             {% if lisays_onnistui == True%}
-            <div class="card" style="width: 60rem;">
-                  <h5 class="card-header text-center bg-success">Kurssi lisätty omiin kursseihin</h5>
+            <script>
+                  setTimeout(function(){ document.getElementById("alert").innerHTML = ""; }, 4000);
+            </script>
+            <div id="alert">
+                  <div class="card" style="width: 60rem;">
+                        <h5 class="card-header text-center bg-success">Kurssi lisätty omiin kursseihin</h5>
+                  </div>
+                  <br>
             </div>
-            <br>
             {% elif lisays_onnistui == False %}
+            <script>
+                  setTimeout(function(){ document.getElementById("alert").innerHTML = ""; }, 4000);
+            </script>
+            <div id="alert">
                   <div class="card" style="width: 60rem;">
                         <h5 class="card-header text-center bg-danger">Kurssi on jo omissa kursseissa</h5>
+                  </div>
+                  <br>
             </div>
-            <br>
             {% endif %}
 
             <div class="card" style="width: 60rem;">
                   <h5 class="card-header">Valitsemasi kurssit</h5>
                   <div class="card-body">
-                        <ul class="list-group list-group-flush" style="overflow:hidden; overflow-y:scroll;">                  
+                        <ul class="list-group list-group-flush">                  
                         {% for kurssi in valitut %}
                         <li class="list-group-item p-2">
-                              <label class="align-middle pt-1" style="width: 18rem">{{kurssi.kurssi}}</label>
+                              <form action="remove" method="post">
+                                    <div class="d-flex bd-highlight bd-highlight">
+                                          {% csrf_token %}
+                                          <label class="flex-grow-1 bd-highlight pt-2 m-0">{{kurssi.kurssi}}</label>
+                                          <button class="btn btn-outline-danger" name="remove" value={{kurssi.kurssi}}>Poista</button> 
+                                    </div>
+                              </form>
                         </li>
                         {% endfor %}
                         </ul>
