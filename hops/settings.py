@@ -25,7 +25,7 @@ secret_file = open('../secrets.json')
 secrets = json.load(secret_file)
 secret_file.close()
 
-#SECRET_KEY = secrets['SECRET_KEY']
+SECRET_KEY = secrets['SECRET_KEY']
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
