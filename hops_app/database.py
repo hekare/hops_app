@@ -13,7 +13,7 @@ def load_data(request):
       
 
       #Datan haku apista. Api palauttaa json-tiedoston kaikista keskustan kampuksen kursseista (tilanne 21.2.2019).
-      headers = {'x-api-key':os.environ['X-API-KEY']}
+      headers = {'x-api-key':os.environ['X_API_KEY']}
       response = requests.get("https://opendata.uta.fi:8443/apiman-gateway/UTA/opintojaksot/1.0/", headers=headers)
       data = response.json()
       
