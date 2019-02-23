@@ -21,18 +21,9 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/2.1/howto/deployment/checklist/
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+SECRET_KEY = os.environ['SECRET_KEY']
 
-#All secrit information is in json file!
-if DEBUG:
-    secret_file = open('../secrets.json')
-    secrets = json.load(secret_file)
-    secret_file.close()
-
-    #SECRET_KEY = secrets['SECRET_KEY']
-else:
-    SECRET_KEY = os.environ['SECRET_KEY']
-
+DEBUG = True
 
 
 ALLOWED_HOSTS = [".herokuapp.com", 'localhost']
@@ -82,18 +73,12 @@ WSGI_APPLICATION = 'hops.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/2.1/ref/settings/#databases
-
-if DEBUG:
-    password = secrets['DATABASE_PSW']
-else:
-    password = os.environ['DATABASE_PSW']
-
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'ohsihadb',
         'USER': 'ohsiha',
-        'PASSWORD': password,
+        'PASSWORD': os.environ['DATABASE_PSW'],
         'HOST': '',
         'PORT': '',
     }
@@ -146,3 +131,5 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'static'),
 )
+
+django_heroku.settings(locals())
