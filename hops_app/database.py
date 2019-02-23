@@ -14,7 +14,7 @@ def load_data(request):
             secret_file = open('../secrets.json')
             secrets = json.load(secret_file)
             secret_file.close()
-            x-api-key = secrets['X-API-KEY']
+            x-api-key = secrets['X_API_KEY']
       else:
             x-api-key = os.environ['X-API-KEY']
 
