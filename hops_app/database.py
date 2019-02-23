@@ -8,9 +8,14 @@ def load_data(request):
       print("Updating data...")
 
       #apin avaimen haku
-      secret_file = open('../secrets.json')
-      secrets = json.load(secret_file)
-      secret_file.close()
+      import os
+      from django.conf import settings
+      if settings.DEBUG:
+            secret_file = open('../secrets.json')
+            secrets = json.load(secret_file)
+            secret_file.close()
+      else:
+            os.environ['X-API-KEY']
 
       #Datan haku apista. Api palauttaa json-tiedoston kaikista keskustan kampuksen kursseista (tilanne 21.2.2019).
       headers = {'x-api-key':secrets['X-API-KEY']}
@@ -41,8 +46,8 @@ def load_data(request):
                   tunniste = kurssi['id'],
                   koodi = kurssi['code'],
                   nimi = kurssi['name'],
-                  pisteet_min = kurssi['creditsMin'],
-                  pisteet_max = kurssi['creditsMax'],
+                  nopat_min = kurssi['creditsMin'],
+                  nopat_max = kurssi['creditsMax'],
                   tutkinto_ohjelma = kurssi['degreeProgrammeCode'],
                   oppiaine = kurssi['subjectCode'],
                   periodi1 = p1,
@@ -53,6 +58,10 @@ def load_data(request):
             )
 
       print("Data updatet")
+      return HttpResponseRedirect('home')
+
+def clear_database(requests):
+      opintojaksot.objects.all().delete()
       return HttpResponseRedirect('home')
 
 def remove_course(request):

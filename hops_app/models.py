@@ -5,7 +5,7 @@ class opintojaksot (models.Model):
       tunniste = models.CharField(max_length=20, primary_key=True) #id, numero – ei kerro mitään
       koodi = models.CharField(max_length=20) #kurrsin koodi – kurssin lyhenne
       nimi = models.TextField()
-      nopast_min = models.IntegerField()
+      nopat_min = models.IntegerField()
       nopat_max = models.IntegerField()
       tutkinto_ohjelma = models.CharField(max_length=20, null=True)
       oppiaine = models.CharField(max_length=20, null=True)

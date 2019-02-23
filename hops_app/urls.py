@@ -11,4 +11,5 @@ urlpatterns = [
       path('list_view/remove', database.remove_course, name="remove_course"),
       path('list_view/add', database.add_course, name="add_course"),
       path('load_data', database.load_data, name="load_data"),
+      path('delete_data', database.clear_database, name="delete_data"),
 ]

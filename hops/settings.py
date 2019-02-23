@@ -20,15 +20,20 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.1/howto/deployment/checklist/
 
-#All secrit information is in json file!
-secret_file = open('../secrets.json')
-secrets = json.load(secret_file)
-secret_file.close()
-
-SECRET_KEY = secrets['SECRET_KEY']
-
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
+
+#All secrit information is in json file!
+if DEBUG:
+    secret_file = open('../secrets.json')
+    secrets = json.load(secret_file)
+    secret_file.close()
+
+    SECRET_KEY = secrets['SECRET_KEY']
+else:
+    SECRET_KEY = os.environ['SECRET_KEY']
+
+
 
 ALLOWED_HOSTS = []
 
@@ -77,6 +82,11 @@ WSGI_APPLICATION = 'hops.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/2.1/ref/settings/#databases
+
+if DEBUG:
+    password = secrets['DATABASE_PSW']
+else:
+    os.environ['DATABASE_PSW']
 
 DATABASES = {
     'default': {
