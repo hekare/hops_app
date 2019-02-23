@@ -12,7 +12,6 @@ https://docs.djangoproject.com/en/2.1/ref/settings/
 
 import os
 import json
-import django_heroku
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -22,9 +21,9 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/2.1/howto/deployment/checklist/
 
 #All secrit information is in json file!
-#secret_file = open('../secrets.json')
-#secrets = json.load(secret_file)
-#secret_file.close()
+secret_file = open('../secrets.json')
+secrets = json.load(secret_file)
+secret_file.close()
 
 #SECRET_KEY = secrets['SECRET_KEY']
 
@@ -128,5 +127,3 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 
 STATIC_URL = '/static/'
-
-django_heroku.settings(locals())
