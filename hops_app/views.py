@@ -53,6 +53,7 @@ def lista(request):
       hakusana = None
       tuloksia = None
       lisays_onnistui = None
+      haetut_kurssit = None
 
       if request.method =="GET":
             query = request.GET.get("name_q")   
