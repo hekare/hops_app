@@ -29,7 +29,7 @@ if DEBUG:
     secrets = json.load(secret_file)
     secret_file.close()
 
-    SECRET_KEY = secrets['SECRET_KEY']
+    #SECRET_KEY = secrets['SECRET_KEY']
 else:
     SECRET_KEY = os.environ['SECRET_KEY']
 
@@ -86,14 +86,14 @@ WSGI_APPLICATION = 'hops.wsgi.application'
 if DEBUG:
     password = secrets['DATABASE_PSW']
 else:
-    os.environ['DATABASE_PSW']
+    password = os.environ['DATABASE_PSW']
 
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'ohsihadb',
         'USER': 'ohsiha',
-        'PASSWORD': secrets['DATABASE_PSW'],
+        'PASSWORD': password,
         'HOST': '',
         'PORT': '',
     }
