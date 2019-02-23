@@ -14,12 +14,12 @@ def load_data(request):
             secret_file = open('../secrets.json')
             secrets = json.load(secret_file)
             secret_file.close()
-            x-api-key = secrets['X_API_KEY']
+            x_api_key = secrets['X_API_KEY']
       else:
-            x-api-key = os.environ['X-API-KEY']
+            x_api_key=os.environ['X-API-KEY']
 
       #Datan haku apista. Api palauttaa json-tiedoston kaikista keskustan kampuksen kursseista (tilanne 21.2.2019).
-      headers = {'x-api-key':x-api-key}
+      headers = {'x-api-key':x_api_key}
       response = requests.get("https://opendata.uta.fi:8443/apiman-gateway/UTA/opintojaksot/1.0/", headers=headers)
       data = response.json()
       
