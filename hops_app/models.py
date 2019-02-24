@@ -18,8 +18,6 @@ class opintojaksot (models.Model):
       periodit = models.CharField(max_length=20, null=True)
       def __str__(self):
             return self.nimi
-      #def periodit(self):
-       #     return json.loads(self.periodit)
       class Meta:
             verbose_name_plural = "Opintojaksot"
 
