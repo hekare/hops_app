@@ -93,11 +93,12 @@ def add_course(request):
 
 def change_year(request):
       year = request.POST.get("vuosi")
-      print("muuttuja vuosi=",year)
       kurssi = request.POST.get("kurssi")
-      print("muuttuja kurssi=",kurssi)
       valitut_kurssit.objects.filter(opiskelija=request.user, kurssi=kurssi).update(opinto_vuosi=year)
       return HttpResponseRedirect("/list_view")
 
-def change_period(request):
+def select_period(request):
+      period = request.POST.get('periodi')
+      kurssi = request.POST.get("kurssi")
+      valitut_kurssit.objects.filter(opiskelija=request.user, kurssi=kurssi).update(periodi=period)
       return HttpResponseRedirect("/list_view")

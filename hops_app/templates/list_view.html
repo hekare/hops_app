@@ -66,17 +66,18 @@
 
                                     <!--periodin valinta-->
                                     <label class="mr-1 mt-1">Periodi:</label>
-                                    <form class="mr-auto" action="change_period" method="post">
+                                    <form class="mr-auto" action="select_period" method="post">
                                           {% csrf_token %}
-                                          <select class="form-control form-control-sm" name="periodi" id="select_period_{{kurssi.kurssi.tunniste}}" onchange="this.form.submit()">
-                                                {% for periodi in kurssi.kurssi.periodit %}
-                                                <option>{{periodi}}</option>
+                                          <select class="form-control form-control-sm" name="periodi" id="periodi{{kurssi.kurssi.tunniste}}" onchange="this.form.submit()">
+                                                <option value=None></option>
+                                                {% for periodi in kurssi.kurssi.get_periodit %}
+                                                <option value={{periodi}}>{{periodi}}</option>
                                                 {% endfor %}
                                           </select>
                                           <input name="kurssi" type="hidden" value={{kurssi.kurssi.tunniste}}>
                                     </form>
                                     <script>
-                                          document.getElementById("select_year_{{kurssi.kurssi.tunniste}}").value ="{{kurssi.opinto_vuosi}}";
+                                          document.getElementById("periodi{{kurssi.kurssi.tunniste}}").value ="{{kurssi.periodi}}";
                                     </script>
 
                                     <!--kurssin poistaminen-->
