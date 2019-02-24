@@ -36,7 +36,14 @@
                         <ul class="list-group list-group-flush">                  
                         {% for kurssi in valitut %}
                         <li class="list-group-item p-2">
-                              <label class="flex-grow-1 bd-highlight pt-2 m-0">{{kurssi.kurssi}}</label>
+                              <label class="flex-grow-1 bd-highlight pt-2 m-0">
+                                    {{kurssi.kurssi}}
+                                    {% if kurssi.kurssi.nopat_min == kurssi.kurssi.nopat_max %}
+                                    ({{kurssi.kurssi.nopat_min}}
+                                    {% else %}
+                                    ({{kurssi.kurssi.nopat_min}}–{{kurssi.kurssi.nopat_max}}
+                                    {%endif%}op.)
+                              </label>
                               <div class="d-flex justify-content-end mt-2">
                                     <!--vuoden valinta-->
                                     <label class="mr-1 mt-1">Vuosi:</label>
@@ -62,10 +69,12 @@
                                     <form class="mr-auto" action="change_period" method="post">
                                           {% csrf_token %}
                                           <select class="form-control form-control-sm" name="periodi" id="select_period_{{kurssi.kurssi.tunniste}}" onchange="this.form.submit()">
-                                                      <option>1</option>
-                                                </select>
-                                                <input name="kurssi" type="hidden" value={{kurssi.kurssi.tunniste}}>
-                                          </form>
+                                                {# % for kurssin in kurssi.kurssi.periodit % #}
+                                                <option></option>
+                                                {# % endfor % #}
+                                          </select>
+                                          <input name="kurssi" type="hidden" value={{kurssi.kurssi.tunniste}}>
+                                    </form>
                                     <script>
                                           document.getElementById("select_year_{{kurssi.kurssi.tunniste}}").value ="{{kurssi.opinto_vuosi}}";
                                     </script>

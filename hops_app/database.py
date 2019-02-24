@@ -37,20 +37,37 @@ def load_data(request):
                         p5 = True 
 
             #Tallenna tietokantaan, jos olemassa -> päivitä kentät
-            opintojaksot.objects.update_or_create(
-                  tunniste = kurssi['id'],
-                  koodi = kurssi['code'],
-                  nimi = kurssi['name'],
-                  nopat_min = kurssi['creditsMin'],
-                  nopat_max = kurssi['creditsMax'],
-                  tutkinto_ohjelma = kurssi['degreeProgrammeCode'],
-                  oppiaine = kurssi['subjectCode'],
-                  periodi1 = p1,
-                  periodi2 = p2,
-                  periodi3 = p3,
-                  periodi4 = p4,
-                  periodi5 = p5,
-            )
+            try:
+                  opintojaksot.objects.create(
+                        tunniste = kurssi['id'],
+                        koodi = kurssi['code'],
+                        nimi = kurssi['name'],
+                        nopat_min = kurssi['creditsMin'],
+                        nopat_max = kurssi['creditsMax'],
+                        tutkinto_ohjelma = kurssi['degreeProgrammeCode'],
+                        oppiaine = kurssi['subjectCode'],
+                        periodi1 = p1,
+                        periodi2 = p2,
+                        periodi3 = p3,
+                        periodi4 = p4,
+                        periodi5 = p5,
+                        periodit = kurssi['studyPeriods']
+                  )
+            except:
+                  opintojaksot.objects.filter(tunniste=kurssi['id']).update(
+                        koodi = kurssi['code'],
+                        nimi = kurssi['name'],
+                        nopat_min = kurssi['creditsMin'],
+                        nopat_max = kurssi['creditsMax'],
+                        tutkinto_ohjelma = kurssi['degreeProgrammeCode'],
+                        oppiaine = kurssi['subjectCode'],
+                        periodi1 = p1,
+                        periodi2 = p2,
+                        periodi3 = p3,
+                        periodi4 = p4,
+                        periodi5 = p5,
+                        periodit = kurssi['studyPeriods']
+                  )
 
       print("Data updatet")
       return HttpResponseRedirect('home')

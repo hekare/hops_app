@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+import json
 
 class opintojaksot (models.Model):
       tunniste = models.CharField(max_length=20, primary_key=True) #id, numero – ei kerro mitään
@@ -14,8 +15,11 @@ class opintojaksot (models.Model):
       periodi3 = models.BooleanField(default=False)
       periodi4 = models.BooleanField(default=False)
       periodi5 = models.BooleanField(default=False)
+      periodit = models.CharField(max_length=20, null=True)
       def __str__(self):
             return self.nimi
+      #def periodit(self):
+       #     return json.loads(self.periodit)
       class Meta:
             verbose_name_plural = "Opintojaksot"
 
