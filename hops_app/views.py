@@ -69,7 +69,7 @@ def lista(request):
       elif request.GET.get("added") == "1":
             lisays_onnistui = True
 
-      valitut_opintojaksot = valitut_kurssit.objects.filter(opiskelija=request.user)
+      valitut_opintojaksot = valitut_kurssit.objects.filter(opiskelija=request.user).order_by('kurssi')
       args={'kurssit': haetut_kurssit,
             'haku': hakusana, 
             'tuloksia': tuloksia, 

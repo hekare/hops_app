@@ -65,12 +65,22 @@ def remove_course(request):
       return HttpResponseRedirect("/list_view")
 
 def add_course(request):
-      add = request.POST.get("add")
+      kurssi_id = request.POST.get('add')
+      kurssi = opintojaksot.objects.get(tunniste=kurssi_id)
       try:
-            kurssi_id = request.POST.get('add')
-            kurssi = opintojaksot.objects.get(tunniste=kurssi_id)
             valitut_kurssit.objects.create(opiskelija=request.user, kurssi=kurssi)
             url = "/list_view/?added=1"
       except:
            url = "/list_view/?added=0"
       return HttpResponseRedirect(url)
+
+def change_year(request):
+      year = request.POST.get("vuosi")
+      print("muuttuja vuosi=",year)
+      kurssi = request.POST.get("kurssi")
+      print("muuttuja kurssi=",kurssi)
+      valitut_kurssit.objects.filter(opiskelija=request.user, kurssi=kurssi).update(opinto_vuosi=year)
+      return HttpResponseRedirect("/list_view")
+
+def change_period(request):
+      return HttpResponseRedirect("/list_view")

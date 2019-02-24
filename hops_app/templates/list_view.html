@@ -36,13 +36,47 @@
                         <ul class="list-group list-group-flush">                  
                         {% for kurssi in valitut %}
                         <li class="list-group-item p-2">
-                              <form action="remove" method="post">
-                                    <div class="d-flex bd-highlight bd-highlight">
+                              <label class="flex-grow-1 bd-highlight pt-2 m-0">{{kurssi.kurssi}}</label>
+                              <div class="d-flex justify-content-end mt-2">
+                                    <!--vuoden valinta-->
+                                    <label class="mr-1 mt-1">Vuosi:</label>
+                                    <form class="mr-2" action="change_year" method="post">
                                           {% csrf_token %}
-                                          <label class="flex-grow-1 bd-highlight pt-2 m-0">{{kurssi.kurssi}}</label>
+                                          <select class="form-control form-control-sm" name="vuosi" id="select_year_{{kurssi.kurssi.tunniste}}" onchange="this.form.submit()">
+                                                      <option value=None></option>
+                                                      <option value="1">1</option>
+                                                      <option value="2">2</option>
+                                                      <option value="3">3</option>
+                                                      <option value="4">4</option>
+                                                      <option value="5">5</option>
+                                                      <option value="6">6</option>
+                                                </select>
+                                                <input name="kurssi" type="hidden" value={{kurssi.kurssi.tunniste}}>
+                                          </form>
+                                    <script>
+                                          document.getElementById("select_year_{{kurssi.kurssi.tunniste}}").value ="{{kurssi.opinto_vuosi}}";
+                                    </script>
+
+                                    <!--periodin valinta-->
+                                    <label class="mr-1 mt-1">Periodi:</label>
+                                    <form class="mr-auto" action="change_period" method="post">
+                                          {% csrf_token %}
+                                          <select class="form-control form-control-sm" name="periodi" id="select_period_{{kurssi.kurssi.tunniste}}" onchange="this.form.submit()">
+                                                      <option>1</option>
+                                                </select>
+                                                <input name="kurssi" type="hidden" value={{kurssi.kurssi.tunniste}}>
+                                          </form>
+                                    <script>
+                                          document.getElementById("select_year_{{kurssi.kurssi.tunniste}}").value ="{{kurssi.opinto_vuosi}}";
+                                    </script>
+
+                                    <!--kurssin poistaminen-->
+                                    <form action="remove" method="post">
+                                          {% csrf_token %}
                                           <button class="btn btn-outline-danger" name="remove" value={{kurssi.kurssi.tunniste}}>Poista</button> 
-                                    </div>
-                              </form>
+                                    </form>
+                              </div>
+
                         </li>
                         {% endfor %}
                         </ul>
