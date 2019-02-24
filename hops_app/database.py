@@ -19,23 +19,6 @@ def load_data(request):
       
       #datan siirto tietokantaan
       for kurssi in data:
-            p1 = False
-            p2 = False
-            p3 = False
-            p4 = False
-            p5 = False
-            if kurssi['studyPeriods']!= None:
-                  if 1 in kurssi['studyPeriods']:
-                        p1 = True 
-                  if 2 in kurssi['studyPeriods']:
-                        p2 = True 
-                  if 3 in kurssi['studyPeriods']:
-                        p3 = True 
-                  if 4 in kurssi['studyPeriods']:
-                        p4 = True 
-                  if 5 in kurssi['studyPeriods']:
-                        p5 = True 
-
             #Tallenna tietokantaan, jos olemassa -> päivitä kentät
             try:
                   opintojaksot.objects.create(
@@ -46,12 +29,7 @@ def load_data(request):
                         nopat_max = kurssi['creditsMax'],
                         tutkinto_ohjelma = kurssi['degreeProgrammeCode'],
                         oppiaine = kurssi['subjectCode'],
-                        periodi1 = p1,
-                        periodi2 = p2,
-                        periodi3 = p3,
-                        periodi4 = p4,
-                        periodi5 = p5,
-                        periodit = kurssi['studyPeriods']
+                        periodit = kurssi['studyPeriods'],
                   )
             except:
                   opintojaksot.objects.filter(tunniste=kurssi['id']).update(
@@ -61,12 +39,7 @@ def load_data(request):
                         nopat_max = kurssi['creditsMax'],
                         tutkinto_ohjelma = kurssi['degreeProgrammeCode'],
                         oppiaine = kurssi['subjectCode'],
-                        periodi1 = p1,
-                        periodi2 = p2,
-                        periodi3 = p3,
-                        periodi4 = p4,
-                        periodi5 = p5,
-                        periodit = kurssi['studyPeriods']
+                        periodit = kurssi['studyPeriods'],
                   )
 
       print("Data updatet")

@@ -10,15 +10,10 @@ class opintojaksot (models.Model):
       nopat_max = models.IntegerField()
       tutkinto_ohjelma = models.CharField(max_length=20, null=True)
       oppiaine = models.CharField(max_length=20, null=True)
-      periodi1 = models.BooleanField(default=False)
-      periodi2 = models.BooleanField(default=False)
-      periodi3 = models.BooleanField(default=False)
-      periodi4 = models.BooleanField(default=False)
-      periodi5 = models.BooleanField(default=False)
-      periodit = models.CharField(max_length=20, null=True)
+      periodit = models.CharField(max_length=20, null=True) #string muotoinen lista kursseista
       def __str__(self):
             return self.nimi
-      def get_periodit(self):
+      def get_periodit(self): #palauttaa periodit listana
             if self.periodit == None:
                   return None
             return self.periodit.replace("[", "").replace("]", "").split(",")
