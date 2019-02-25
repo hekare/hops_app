@@ -35,10 +35,16 @@
             {% endif %}
             <!--Perusopinnot-->
             <div class="card" style="width: 60rem;">
-                  <h5 class="card-header">Perusopinnot</h5>
+                  <h5 class="card-header">Perusopinnot
+                  {% if perusopinnot.1 == perusopinnot.2 %}
+                  {{perusopinnot.2}}op.
+                  {% else %}
+                  {{perusopinnot.1}}–{{perusopinnot.2}}op.
+                  {% endif %}
+                  </h5>
                   <div class="card-body">
                         <ul class="list-group list-group-flush">                  
-                        {% for kurssi in perusopinnot %}
+                        {% for kurssi in perusopinnot.0 %}
                               {% include 'chosen_courses.html' %}
                         {% endfor %}
                         </ul>

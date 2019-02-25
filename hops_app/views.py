@@ -71,6 +71,7 @@ def lista(request):
             lisays_onnistui = True
 
       perusopinnot = valitut_kurssit.objects.filter(opiskelija=request.user, opintokokonaisuus="perusopinnot").order_by('kurssi')
+      nopat_perusopinnot = valitut_kurssit.objects.filter(opiskelija=request.user, opintokokonaisuus="perusopinnot").aggregate(Sum('kurssi__nopat_min'), Sum('kurssi__nopat_max'))
       pääaine = valitut_kurssit.objects.filter(opiskelija=request.user, opintokokonaisuus="pääaine").order_by('kurssi')
       sivuaine = valitut_kurssit.objects.filter(opiskelija=request.user, opintokokonaisuus="sivuaine").order_by('kurssi')
       vapaasti_valittavat = valitut_kurssit.objects.filter(opiskelija=request.user, opintokokonaisuus="täydentävät").order_by('kurssi')
@@ -79,8 +80,9 @@ def lista(request):
             'haku': hakusana, 
             'tuloksia': tuloksia, 
             'lisays_onnistui': lisays_onnistui,
-            'perusopinnot': perusopinnot,
+            'perusopinnot': [perusopinnot, nopat_perusopinnot['kurssi__nopat_min__sum'], nopat_perusopinnot['kurssi__nopat_min__sum']],
             'pääaine': pääaine,
             'sivuaine': sivuaine,
             'vapaasti_valittavat': vapaasti_valittavat}
+      
       return render(request, 'list_view.html', args)
