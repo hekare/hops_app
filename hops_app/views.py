@@ -73,16 +73,20 @@ def lista(request):
       perusopinnot = valitut_kurssit.objects.filter(opiskelija=request.user, opintokokonaisuus="perusopinnot").order_by('kurssi')
       nopat_perusopinnot = valitut_kurssit.objects.filter(opiskelija=request.user, opintokokonaisuus="perusopinnot").aggregate(Sum('kurssi__nopat_min'), Sum('kurssi__nopat_max'))
       pääaine = valitut_kurssit.objects.filter(opiskelija=request.user, opintokokonaisuus="pääaine").order_by('kurssi')
+      nopat_pääaine = valitut_kurssit.objects.filter(opiskelija=request.user, opintokokonaisuus="pääaine").aggregate(Sum('kurssi__nopat_min'), Sum('kurssi__nopat_max'))
       sivuaine = valitut_kurssit.objects.filter(opiskelija=request.user, opintokokonaisuus="sivuaine").order_by('kurssi')
+      nopat_sivuaine = valitut_kurssit.objects.filter(opiskelija=request.user, opintokokonaisuus="sivuaine").aggregate(Sum('kurssi__nopat_min'), Sum('kurssi__nopat_max'))
       vapaasti_valittavat = valitut_kurssit.objects.filter(opiskelija=request.user, opintokokonaisuus="täydentävät").order_by('kurssi')
+      nopat_valittavat = valitut_kurssit.objects.filter(opiskelija=request.user, opintokokonaisuus="täydentävät").aggregate(Sum('kurssi__nopat_min'), Sum('kurssi__nopat_max'))
       
       args={'kurssit': haetut_kurssit,
             'haku': hakusana, 
             'tuloksia': tuloksia, 
             'lisays_onnistui': lisays_onnistui,
             'perusopinnot': [perusopinnot, nopat_perusopinnot['kurssi__nopat_min__sum'], nopat_perusopinnot['kurssi__nopat_min__sum']],
-            'pääaine': pääaine,
-            'sivuaine': sivuaine,
-            'vapaasti_valittavat': vapaasti_valittavat}
+            'pääaine': [pääaine, nopat_pääaine['kurssi__nopat_min__sum'], nopat_pääaine['kurssi__nopat_min__sum']],
+            'sivuaine': [sivuaine, nopat_sivuaine['kurssi__nopat_min__sum'], nopat_sivuaine['kurssi__nopat_min__sum']],
+            'vapaasti_valittavat': [vapaasti_valittavat, nopat_valittavat['kurssi__nopat_min__sum'], nopat_valittavat['kurssi__nopat_min__sum']],
+            }
       
       return render(request, 'list_view.html', args)

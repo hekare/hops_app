@@ -34,13 +34,16 @@
             </div>
             {% endif %}
             <!--Perusopinnot-->
-            <div class="card" style="width: 60rem;">
-                  <h5 class="card-header">Perusopinnot
-                  {% if perusopinnot.1 == perusopinnot.2 %}
-                  {{perusopinnot.2}}op.
-                  {% else %}
-                  {{perusopinnot.1}}–{{perusopinnot.2}}op.
-                  {% endif %}
+            <div class="card border-secondary" style="width: 60rem;">
+                  <h5 class="card-header d-flex bg-secondary text-white">
+                        <div class="mr-auto">Perusopinnot</div>
+                        {% if perusopinnot.1 == None %}
+                        0
+                        {% elif perusopinnot.1 == perusopinnot.2 %}
+                        {{perusopinnot.2}}
+                        {% else %}
+                        {{perusopinnot.1}}–{{perusopinnot.2}}
+                        {% endif %}op.
                   </h5>
                   <div class="card-body">
                         <ul class="list-group list-group-flush">                  
@@ -51,33 +54,60 @@
                   </div>
             </div><br>
             <!--Pääaine-->
-            <div class="card" style="width: 60rem;">
-                  <h5 class="card-header">Pääaine</h5>
+            <div class="card border-secondary" style="width: 60rem;">
+                  <h5 class="card-header d-flex bg-secondary text-white">
+                        <div class="mr-auto">Pääaine</div>                  
+                        {% if pääaine.1 == None %}
+                        0
+                        {% elif pääaine.1 == pääaine.2 %}
+                        {{pääaine.2}}
+                        {% else %}
+                        {{pääaine.1}}–{{pääaine.2}}
+                        {% endif %}op.
+                  </h5>
                   <div class="card-body">
                         <ul class="list-group list-group-flush">                  
-                        {% for kurssi in pääaine %}
+                        {% for kurssi in pääaine.0 %}
                               {% include 'chosen_courses.html' %}
                         {% endfor %}
                         </ul>
                   </div>
             </div><br>
             <!--Sivuaine-->
-            <div class="card" style="width: 60rem;">
-                  <h5 class="card-header">Sivuaine</h5>
+            <div class="card border-secondary" style="width: 60rem;">
+                  <h5 class="card-header d-flex bg-secondary text-white">
+                  <div class="mr-auto">Sivuaine</div>
+                  {% if sivuaine.1 == None %}
+                  0
+                  {% elif sivuaine.1 == sivuaine.2 %}
+                  {{sivuaine.2}}
+                  {% else %}
+                  {{sivuaine.1}}–{{sivuaine.2}}
+                  {% endif %}op.
+                  </h5>
                   <div class="card-body">
                         <ul class="list-group list-group-flush">                  
-                        {% for kurssi in sivuaine %}
+                        {% for kurssi in sivuaine.0 %}
                               {% include 'chosen_courses.html' %}
                         {% endfor %}
                         </ul>
                   </div>
             </div><br>
             <!--Täydentävät opinnot-->
-            <div class="card" style="width: 60rem;">
-                  <h5 class="card-header">Vapaasti valittavat opinnot</h5>
+            <div class="card border-secondary" style="width: 60rem;">
+                  <h5 class="card-header d-flex bg-secondary text-white">
+                  <div class="mr-auto">Täydentävät opinnot</div>
+                  {% if vapaasti_valittavat.1 == None %}
+                  0
+                  {% elif vapaasti_valittavat.1 == vapaasti_valittavat.2 %}
+                  {{vapaasti_valittavat.2}}
+                  {% else %}
+                  {{vapaasti_valittavat.1}}–{{vapaasti_valittavat.2}}
+                  {% endif %}op.
+                  </h5>
                   <div class="card-body">
                         <ul class="list-group list-group-flush">                  
-                        {% for kurssi in vapaasti_valittavat %}
+                        {% for kurssi in vapaasti_valittavat.0 %}
                               {% include 'chosen_courses.html' %}
                         {% endfor %}
                         </ul>
