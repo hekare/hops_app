@@ -28,7 +28,7 @@
                               <li class="nav-item">
                                           <a class="nav-link" href={% url 'lista' %}>Lista</a>
                                     </li>
-                              {% if perms.poll.change_poll %}
+                              {% if perms.poll.change_poll %} <!-- Näytetään vain adminille -->
                               {% if perms.poll.delete_poll %}
                               <li class="nav-item">
                                     <a class="nav-link" href={% url 'load_data' %}>Lataa data</a>
@@ -37,7 +37,7 @@
                                     <a class="nav-link" href={% url 'delete_data' %}>Tyhjää tietokanta</a>
                               </li>
                               <li class="nav-item">
-                                    <a class="nav-link" href="admin/">Admin</a>
+                                    <a class="nav-link" href="/admin/">Admin</a>
                               </li>
                               {% endif %}
                               {% endif %}

@@ -8,6 +8,7 @@
 
 <div class="d-flex justify-content-center">
       <div class="px-2">
+            <!--Ilmoitus onnistuneesta kurssin lisäyksestä-->
             {% if lisays_onnistui == True%}
             <script>
                   setTimeout(function(){ document.getElementById("alert").innerHTML = ""; }, 4000);
@@ -19,6 +20,7 @@
                   <br>
             </div>
             {% elif lisays_onnistui == False %}
+            <!--Ilmoitus onnistuneesta kurssin poistosta-->
             <script>
                   setTimeout(function(){ document.getElementById("alert").innerHTML = ""; }, 4000);
             </script>
@@ -36,6 +38,7 @@
                         <ul class="list-group list-group-flush">                  
                         {% for kurssi in valitut %}
                         <li class="list-group-item p-2">
+                              <!--kurssin nimi ja opintopisteet-->
                               <label class="flex-grow-1 bd-highlight pt-2 m-0">
                                     {{kurssi.kurssi}}
                                     {% if kurssi.kurssi.nopat_min == kurssi.kurssi.nopat_max %}
@@ -66,7 +69,7 @@
 
                                     <!--periodin valinta-->
                                     <label class="mr-1 mt-1">Periodi:</label>
-                                    <form class="mr-auto" action="select_period" method="post">
+                                    <form class="mr-2" action="select_period" method="post">
                                           {% csrf_token %}
                                           <select class="form-control form-control-sm" name="periodi" id="periodi{{kurssi.kurssi.tunniste}}" onchange="this.form.submit()">
                                                 <option value=None></option>
@@ -78,6 +81,22 @@
                                     </form>
                                     <script>
                                           document.getElementById("periodi{{kurssi.kurssi.tunniste}}").value ="{{kurssi.periodi}}";
+                                    </script>
+
+                                    <!--opintokokonaisuuden valinta-->
+                                    <label class="mr-1 mt-1">Opintokokonaisuus:</label>
+                                    <form class="mr-auto" action="select_module" method="post">
+                                          {% csrf_token %}
+                                          <select class="form-control form-control-sm" name="moduuli" id="moduuli{{kurssi.kurssi.tunniste}}" onchange="this.form.submit()">
+                                                <option value=None></option>
+                                                {% for moduuli in kurssi.get_modules %}
+                                                <option value={{moduuli}}>{{moduuli}}</option>
+                                                {% endfor %}
+                                          </select>
+                                          <input name="kurssi" type="hidden" value={{kurssi.kurssi.tunniste}}>
+                                    </form>
+                                    <script>
+                                          document.getElementById("moduuli{{kurssi.kurssi.tunniste}}").value ="{{kurssi.opintokokonaisuus}}";
                                     </script>
 
                                     <!--kurssin poistaminen-->

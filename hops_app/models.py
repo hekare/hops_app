@@ -25,8 +25,11 @@ class valitut_kurssit (models.Model):
       kurssi = models.ForeignKey(opintojaksot, on_delete=models.CASCADE) #opintojakson id
       periodi = models.IntegerField(null=True)
       opinto_vuosi = models.IntegerField(null=True)
+      opintokokonaisuus = models.CharField(max_length=20, null=True)
       def __str__(self):
-            return self.opiskelija.username
+            return "{0}: {1}".format(self.opiskelija.username, self.kurssi.nimi)
+      def get_modules(self):
+            return ["perusopinnot","pääaine","sivuaine"]
       class Meta:
             verbose_name_plural = "Valitut kurssit"
             unique_together = (("opiskelija", "kurssi"),)

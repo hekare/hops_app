@@ -6,12 +6,9 @@ from django.http import HttpResponseRedirect, HttpResponse
 def load_data(request):
       #Funktio lataa yliopistun opintojaksot rajapinnasta ja siirtää tiedot tietokantaan.
       print("Updating data...")
-
-      #apin avaimen haku
       import os
       from django.conf import settings
       
-
       #Datan haku apista. Api palauttaa json-tiedoston kaikista keskustan kampuksen kursseista (tilanne 21.2.2019).
       headers = {'x-api-key':os.environ['X_API_KEY']}
       response = requests.get("https://opendata.uta.fi:8443/apiman-gateway/UTA/opintojaksot/1.0/", headers=headers)
@@ -41,7 +38,6 @@ def load_data(request):
                         oppiaine = kurssi['subjectCode'],
                         periodit = kurssi['studyPeriods'],
                   )
-
       print("Data updatet")
       return HttpResponseRedirect('home')
 
@@ -74,4 +70,11 @@ def select_period(request):
       period = request.POST.get('periodi')
       kurssi = request.POST.get("kurssi")
       valitut_kurssit.objects.filter(opiskelija=request.user, kurssi=kurssi).update(periodi=period)
+      return HttpResponseRedirect("/list_view")
+
+
+def select_module(request):
+      module = request.POST.get('moduuli')
+      kurssi = request.POST.get('kurssi')
+      valitut_kurssit.objects.filter(opiskelija=request.user, kurssi=kurssi).update(opintokokonaisuus=module)
       return HttpResponseRedirect("/list_view")
