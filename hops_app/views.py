@@ -69,10 +69,16 @@ def lista(request):
       elif request.GET.get("added") == "1":
             lisays_onnistui = True
 
-      valitut_opintojaksot = valitut_kurssit.objects.filter(opiskelija=request.user).order_by('kurssi')
+      perusopinnot = valitut_kurssit.objects.filter(opiskelija=request.user, opintokokonaisuus="perusopinnot").order_by('kurssi')
+      pääaine = valitut_kurssit.objects.filter(opiskelija=request.user, opintokokonaisuus="pääaine").order_by('kurssi')
+      sivuaine = valitut_kurssit.objects.filter(opiskelija=request.user, opintokokonaisuus="sivuaine").order_by('kurssi')
+      vapaasti_valittavat = valitut_kurssit.objects.filter(opiskelija=request.user, opintokokonaisuus="täydentävät").order_by('kurssi')
       args={'kurssit': haetut_kurssit,
             'haku': hakusana, 
             'tuloksia': tuloksia, 
             'lisays_onnistui': lisays_onnistui,
-            'valitut': valitut_opintojaksot}
+            'perusopinnot': perusopinnot,
+            'pääaine': pääaine,
+            'sivuaine': sivuaine,
+            'vapaasti_valittavat': vapaasti_valittavat}
       return render(request, 'list_view.html', args)

@@ -1,0 +1,68 @@
+<li class="list-group-item p-2">
+      <!--kurssin nimi ja opintopisteet-->
+      <label class="flex-grow-1 bd-highlight pt-2 m-0">
+            {{kurssi.kurssi}}
+            {% if kurssi.kurssi.nopat_min == kurssi.kurssi.nopat_max %}
+            ({{kurssi.kurssi.nopat_min}}
+            {% else %}
+            ({{kurssi.kurssi.nopat_min}}–{{kurssi.kurssi.nopat_max}}
+            {%endif%}op.)
+      </label>
+      <div class="d-flex justify-content-end mt-2">
+            <!--vuoden valinta-->
+            <label class="mr-1 mt-1">Vuosi:</label>
+            <form class="mr-2" action="change_year" method="post">
+                  {% csrf_token %}
+                  <select class="form-control form-control-sm" name="vuosi" id="select_year_{{kurssi.kurssi.tunniste}}" onchange="this.form.submit()">
+                              <option value=None></option>
+                              <option value="1">1</option>
+                              <option value="2">2</option>
+                              <option value="3">3</option>
+                              <option value="4">4</option>
+                              <option value="5">5</option>
+                              <option value="6">6</option>
+                        </select>
+                        <input name="kurssi" type="hidden" value={{kurssi.kurssi.tunniste}}>
+                  </form>
+            <script>
+                  document.getElementById("select_year_{{kurssi.kurssi.tunniste}}").value ="{{kurssi.opinto_vuosi}}";
+            </script>
+
+            <!--periodin valinta-->
+            <label class="mr-1 mt-1">Periodi:</label>
+            <form class="mr-auto" action="select_period" method="post">
+                  {% csrf_token %}
+                  <select class="form-control form-control-sm" name="periodi" id="periodi{{kurssi.kurssi.tunniste}}" onchange="this.form.submit()">
+                        <option value=None></option>
+                        {% for periodi in kurssi.kurssi.get_periodit %}
+                        <option value={{periodi}}>{{periodi}}</option>
+                        {% endfor %}
+                  </select>
+                  <input name="kurssi" type="hidden" value={{kurssi.kurssi.tunniste}}>
+            </form>
+            <script>
+                  document.getElementById("periodi{{kurssi.kurssi.tunniste}}").value ="{{kurssi.periodi}}";
+            </script>
+
+            <!--opintokokonaisuuden valinta-->
+            <div class="dropdown">
+                  <button class="btn btn-sm btn-secondary dropdown-toggle mr-2 mt-1" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Siirrä</button>
+                  <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
+                        <form class="mr-auto" action="select_module" method="post">
+                              {% csrf_token %}
+                              {% for moduuli in kurssi.get_modules %}
+                              <button class="dropdown-item" type="submit" name="moduuli" value={{moduuli}}>{{moduuli}}</button>
+                              {% endfor %}
+                              <input name="kurssi" type="hidden" value={{kurssi.kurssi.tunniste}}>
+                        </form>
+                  </div>
+          </div>
+
+            <!--kurssin poistaminen-->
+            <form action="remove" method="post">
+                  {% csrf_token %}
+                  <button class="btn btn-outline-danger" name="remove" value={{kurssi.kurssi.tunniste}}>Poista</button> 
+            </form>
+      </div>
+
+</li>

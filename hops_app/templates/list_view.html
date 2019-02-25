@@ -1,7 +1,9 @@
 {% extends 'base.html' %}
 
-{% block title %}
-<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+{% block head %}
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 {% endblock %}
 
 {% block content %}
@@ -32,87 +34,81 @@
             </div>
             {% endif %}
 
+            <!--Perusopinnot-->
             <div class="card" style="width: 60rem;">
-                  <h5 class="card-header">Valitsemasi kurssit</h5>
+                  <h5 class="card-header">Perusopinnot</h5>
                   <div class="card-body">
                         <ul class="list-group list-group-flush">                  
-                        {% for kurssi in valitut %}
-                        <li class="list-group-item p-2">
-                              <!--kurssin nimi ja opintopisteet-->
-                              <label class="flex-grow-1 bd-highlight pt-2 m-0">
-                                    {{kurssi.kurssi}}
-                                    {% if kurssi.kurssi.nopat_min == kurssi.kurssi.nopat_max %}
-                                    ({{kurssi.kurssi.nopat_min}}
-                                    {% else %}
-                                    ({{kurssi.kurssi.nopat_min}}–{{kurssi.kurssi.nopat_max}}
-                                    {%endif%}op.)
-                              </label>
-                              <div class="d-flex justify-content-end mt-2">
-                                    <!--vuoden valinta-->
-                                    <label class="mr-1 mt-1">Vuosi:</label>
-                                    <form class="mr-2" action="change_year" method="post">
-                                          {% csrf_token %}
-                                          <select class="form-control form-control-sm" name="vuosi" id="select_year_{{kurssi.kurssi.tunniste}}" onchange="this.form.submit()">
-                                                      <option value=None></option>
-                                                      <option value="1">1</option>
-                                                      <option value="2">2</option>
-                                                      <option value="3">3</option>
-                                                      <option value="4">4</option>
-                                                      <option value="5">5</option>
-                                                      <option value="6">6</option>
-                                                </select>
-                                                <input name="kurssi" type="hidden" value={{kurssi.kurssi.tunniste}}>
-                                          </form>
-                                    <script>
-                                          document.getElementById("select_year_{{kurssi.kurssi.tunniste}}").value ="{{kurssi.opinto_vuosi}}";
-                                    </script>
-
-                                    <!--periodin valinta-->
-                                    <label class="mr-1 mt-1">Periodi:</label>
-                                    <form class="mr-2" action="select_period" method="post">
-                                          {% csrf_token %}
-                                          <select class="form-control form-control-sm" name="periodi" id="periodi{{kurssi.kurssi.tunniste}}" onchange="this.form.submit()">
-                                                <option value=None></option>
-                                                {% for periodi in kurssi.kurssi.get_periodit %}
-                                                <option value={{periodi}}>{{periodi}}</option>
-                                                {% endfor %}
-                                          </select>
-                                          <input name="kurssi" type="hidden" value={{kurssi.kurssi.tunniste}}>
-                                    </form>
-                                    <script>
-                                          document.getElementById("periodi{{kurssi.kurssi.tunniste}}").value ="{{kurssi.periodi}}";
-                                    </script>
-
-                                    <!--opintokokonaisuuden valinta-->
-                                    <label class="mr-1 mt-1">Opintokokonaisuus:</label>
-                                    <form class="mr-auto" action="select_module" method="post">
-                                          {% csrf_token %}
-                                          <select class="form-control form-control-sm" name="moduuli" id="moduuli{{kurssi.kurssi.tunniste}}" onchange="this.form.submit()">
-                                                <option value=None></option>
-                                                {% for moduuli in kurssi.get_modules %}
-                                                <option value={{moduuli}}>{{moduuli}}</option>
-                                                {% endfor %}
-                                          </select>
-                                          <input name="kurssi" type="hidden" value={{kurssi.kurssi.tunniste}}>
-                                    </form>
-                                    <script>
-                                          document.getElementById("moduuli{{kurssi.kurssi.tunniste}}").value ="{{kurssi.opintokokonaisuus}}";
-                                    </script>
-
-                                    <!--kurssin poistaminen-->
-                                    <form action="remove" method="post">
-                                          {% csrf_token %}
-                                          <button class="btn btn-outline-danger" name="remove" value={{kurssi.kurssi.tunniste}}>Poista</button> 
-                                    </form>
-                              </div>
-
-                        </li>
+                        {% for kurssi in perusopinnot %}
+                              {% include 'chosen_courses.html' %}
+                        {% endfor %}
+                        </ul>
+                  </div>
+            </div><br>
+            <!--Pääaine-->
+            <div class="card" style="width: 60rem;">
+                  <h5 class="card-header">Pääaine</h5>
+                  <div class="card-body">
+                        <ul class="list-group list-group-flush">                  
+                        {% for kurssi in pääaine %}
+                              {% include 'chosen_courses.html' %}
+                        {% endfor %}
+                        </ul>
+                  </div>
+            </div><br>
+            <!--Sivuaine-->
+            <div class="card" style="width: 60rem;">
+                  <h5 class="card-header">Sivuaine</h5>
+                  <div class="card-body">
+                        <ul class="list-group list-group-flush">                  
+                        {% for kurssi in sivuaine %}
+                              {% include 'chosen_courses.html' %}
+                        {% endfor %}
+                        </ul>
+                  </div>
+            </div><br>
+            <!--Täydentävät opinnot-->
+            <div class="card" style="width: 60rem;">
+                  <h5 class="card-header">Vapaasti valittavat opinnot</h5>
+                  <div class="card-body">
+                        <ul class="list-group list-group-flush">                  
+                        {% for kurssi in vapaasti_valittavat %}
+                              {% include 'chosen_courses.html' %}
                         {% endfor %}
                         </ul>
                   </div>
             </div>
+            
       </div>
       <!--kurssien lisäyspaneeli-->
-      {% include 'add_course.html' %}
+      <div class="px-2">
+            <div class="card" style="width: 25rem; height: 45rem;">
+                        
+                  <div class="card-header">
+                        <h5>Kurssitarjonta</h5>
+                        <form class="form-inline my-2 my-lg-0" method="GET">
+                              <input class="form-control mr-sm-2" type="search" name="name_q" placeholder=Etsi aria-label="Search">
+                              <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Etsi</button>
+                        </form>
+                        {% if haku != None %}
+                        <br>
+                        <p>Hakusanalla "{{haku}}" löytyi {{tuloksia}} hakutulosta.</p>
+                        {% endif %}
+                  </div>
+                  <ul class="list-group list-group-flush" style="overflow:hidden; overflow-y:scroll;">                  
+                        {% for kurssi in kurssit %}
+                        <li class="list-group-item p-2">
+                              <form action="add" method="post">
+                                    {% csrf_token %}
+                                    <div class="form-goup">
+                                          <button class="btn btn-outline-success align-middle mr-2" name="add" value={{kurssi.tunniste}}>+</button> 
+                                          <label class="align-middle pt-1" style="width: 18rem">{{kurssi.nimi}}</label>
+                                    </div>
+                              </form>
+                        </li>
+                        {% endfor %}
+                  </ul>
+            </div>
+      </div>
 </div>
 {% endblock %}
