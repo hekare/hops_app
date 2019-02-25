@@ -5,6 +5,7 @@ from django.contrib.auth.models import User
 from django.shortcuts import redirect, render
 from django.http import HttpResponseRedirect, HttpResponse
 from .models import opintojaksot, valitut_kurssit
+from django.db.models import Sum
 
 
 def start_page (request):
@@ -73,6 +74,7 @@ def lista(request):
       pääaine = valitut_kurssit.objects.filter(opiskelija=request.user, opintokokonaisuus="pääaine").order_by('kurssi')
       sivuaine = valitut_kurssit.objects.filter(opiskelija=request.user, opintokokonaisuus="sivuaine").order_by('kurssi')
       vapaasti_valittavat = valitut_kurssit.objects.filter(opiskelija=request.user, opintokokonaisuus="täydentävät").order_by('kurssi')
+      
       args={'kurssit': haetut_kurssit,
             'haku': hakusana, 
             'tuloksia': tuloksia, 
