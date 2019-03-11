@@ -44,13 +44,25 @@ def register(request):
 
 @login_required(login_url='/')
 def home(request):
-      return render(request, 'home.html', {})
+      args={
+      }
+      return render(request, 'home.html', args)
 
+PERIODIAJAT = [["Sep 01","Oct 20"],["Oct 20","Dec 24"],["Jan 01","Mar 01"],["Mar 01","May 15"]]
 @login_required(login_url='/')
 def aikataulu(request):
       kurssi_nimet = list(valitut_kurssit.objects.filter(opiskelija=request.user).values_list("kurssi__koodi", flat=True))
+      valitut__ = valitut_kurssit.objects.filter(opiskelija=request.user)
+      valitut = []
+      
+
+      for kurssi in valitut__:
+            if(kurssi.periodi != None and kurssi.opinto_vuosi != None):
+                  valitut.append([kurssi.kurssi.koodi, PERIODIAJAT[kurssi.periodi-1][0]+" 2013", PERIODIAJAT[kurssi.periodi-1][1]+" 2013"])
+
       args = {
             'nimet': json.dumps(kurssi_nimet),
+            'valitut': json.dumps(valitut),
       }
       return render(request, 'schedule_view.html', args)
 
@@ -85,7 +97,7 @@ def lista(request):
       nopat_valittavat = valitut_kurssit.objects.filter(opiskelija=request.user, opintokokonaisuus="täydentävät").aggregate(Sum('kurssi__nopat_min'), Sum('kurssi__nopat_max'))
       
       args={'kurssit': haetut_kurssit,
-            'haku': hakusana, 
+            'haku': hakusana,
             'tuloksia': tuloksia, 
             'lisays_onnistui': lisays_onnistui,
             'perusopinnot': [perusopinnot, nopat_perusopinnot['kurssi__nopat_min__sum'], nopat_perusopinnot['kurssi__nopat_min__sum']],

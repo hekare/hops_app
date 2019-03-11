@@ -8,6 +8,19 @@
 {% block content %}
 <script type="text/javascript" src="http://d3js.org/d3.v3.min.js"></script>
 <script type="text/javascript" src="http://static.mentful.com/gantt-chart-d3v2.js"></script>
-<script>var taskNames = {{nimet|safe}};</script>
-<script type="text/javascript" src="/static/gantt.js"></script>
+<script>
+      var names = {{nimet|safe}};
+      var tasks = [
+      {"taskName":"VENA7", "startDate":new Date("Dec 09 2012"),"endDate":new Date("Dec 09 2014")}];
+
+      valitut = {{valitut|safe}};
+      var valitutjs = [];
+      for  (i = 0; i < valitut.length; i++) {
+            valitutjs.push({"taskName":valitut[i][0], "startDate":new Date(valitut[i][1]),"endDate":new Date(valitut[i][2])});
+      }
+
+      var format = "%B %Y";
+      var gantt = d3.gantt().taskTypes(names).tickFormat(format).height(names.length*50);
+      gantt(valitutjs);
+</script>
 {% endblock %}

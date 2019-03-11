@@ -18,4 +18,5 @@ urlpatterns = [
       path('list_view/select_module', database.select_module, name="select_module"),
       path('load_data', database.load_data, name="load_data"),
       path('delete_data', database.clear_database, name="delete_data"),
+      path('oma_vuosi', database.own_study_year, name="oma_vuosi")
 ]

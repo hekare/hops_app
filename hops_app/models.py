@@ -33,3 +33,9 @@ class valitut_kurssit (models.Model):
       class Meta:
             verbose_name_plural = "Valitut kurssit"
             unique_together = (("opiskelija", "kurssi"),)
+
+class opinto_vuodet (models.Model):
+      opiskelija = models.ForeignKey(User, on_delete=models.CASCADE)
+      opintovuosi = models.IntegerField(null=True)
+      class Meta:
+            verbose_name_plural = "Opinto vuodet"

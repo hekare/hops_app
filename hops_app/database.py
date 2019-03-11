@@ -1,5 +1,5 @@
 from django.http import HttpResponseRedirect
-from .models import opintojaksot, valitut_kurssit
+from .models import opintojaksot, valitut_kurssit, opinto_vuodet
 import json, requests
 from django.http import HttpResponseRedirect, HttpResponse
 
@@ -78,3 +78,9 @@ def select_module(request):
       kurssi = request.POST.get('kurssi')
       valitut_kurssit.objects.filter(opiskelija=request.user, kurssi=kurssi).update(opintokokonaisuus=module)
       return HttpResponseRedirect("/list_view")
+
+def own_study_year(request):
+      vuosi = request.POST.get('vuosi')
+      opinto_vuodet.objects.get_or_create(opiskelija=request.user)
+      opinto_vuodet.objects.filter(opiskelija=request.user).update(opintovuosi=vuosi)
+      return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
