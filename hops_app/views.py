@@ -6,6 +6,7 @@ from django.shortcuts import redirect, render
 from django.http import HttpResponseRedirect, HttpResponse
 from .models import opintojaksot, valitut_kurssit
 from django.db.models import Sum
+import json
 
 
 def start_page (request):
@@ -47,7 +48,11 @@ def home(request):
 
 @login_required(login_url='/')
 def aikataulu(request):
-      return render(request, 'schedule_view.html', {})
+      kurssi_nimet = list(valitut_kurssit.objects.filter(opiskelija=request.user).values_list("kurssi__koodi", flat=True))
+      args = {
+            'nimet': json.dumps(kurssi_nimet),
+      }
+      return render(request, 'schedule_view.html', args)
 
 @login_required(login_url='/')
 def lista(request):

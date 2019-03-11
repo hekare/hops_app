@@ -1,6 +1,8 @@
 <li class="list-group-item p-2">
       <!--kurssin nimi ja opintopisteet-->
       <label class="flex-grow-1 bd-highlight pt-2 m-0">
+            {{kurssi.kurssi.koodi}}
+            <br>
             {{kurssi.kurssi}}
             {% if kurssi.kurssi.nopat_min == kurssi.kurssi.nopat_max %}
             ({{kurssi.kurssi.nopat_min}}
