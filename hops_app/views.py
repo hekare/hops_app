@@ -48,9 +48,13 @@ def register(request):
 #Kirjautuneen käyttäjän aloitussivu
 @login_required(login_url='/')
 def home(request):
-      vuosi = opinto_vuodet.objects.filter(opiskelija=request.user).get()
+      try:
+            vuosi = (opinto_vuodet.objects.filter(opiskelija=request.user).get()).opintovuosi
+      except:
+            vuosi = "Ei valittu"
+      print(vuosi)
       args={
-            'opintovuosi': vuosi.opintovuosi,
+            'opintovuosi': vuosi,
       }
       return render(request, 'home.html', args)
 
@@ -61,7 +65,11 @@ def aikataulu(request):
       kurssi_nimet = list(valitut_kurssit.objects.filter(opiskelija=request.user).values_list("kurssi__koodi", flat=True))
       valitut__ = valitut_kurssit.objects.filter(opiskelija=request.user)
       valitut = []
-      opintovuosi = (opinto_vuodet.objects.filter(opiskelija=request.user).get()).opintovuosi
+      try:
+            vuosi = (opinto_vuodet.objects.filter(opiskelija=request.user).get()).opintovuosi
+      except:
+            vuosi = "Ei valittu"
+
       today = datetime.today()
 
       for kurssi in valitut__:
@@ -72,7 +80,7 @@ def aikataulu(request):
       args = {
             'nimet': json.dumps(kurssi_nimet),
             'valitut': json.dumps(valitut),
-            'opintovuosi': opintovuosi,
+            'opintovuosi': vuosi,
       }
       return render(request, 'schedule_view.html', args)
 
@@ -111,10 +119,13 @@ def lista(request):
       nopat_valittavat = valitut_kurssit.objects.filter(opiskelija=request.user, opintokokonaisuus="täydentävät").aggregate(Sum('kurssi__nopat_min'), Sum('kurssi__nopat_max'))
 
       #Opiskelijan oma opintovuosi
-      vuosi = opinto_vuodet.objects.filter(opiskelija=request.user).get()
+      try:
+            vuosi = (opinto_vuodet.objects.filter(opiskelija=request.user).get()).opintovuosi
+      except:
+            vuosi = "Ei valittu"
       
       args={'kurssit': haetut_kurssit,
-            'opintovuosi':vuosi.opintovuosi,
+            'opintovuosi':vuosi,
             'haku': hakusana,
             'tuloksia': tuloksia, 
             'lisays_onnistui': lisays_onnistui,
