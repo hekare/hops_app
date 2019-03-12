@@ -59,7 +59,7 @@
                         </ul>
                         <ul class="navbar-nav flex-row ml-md-auto d-none d-md-flex">
                               <li class="nav-item dropdown">
-                                    <a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Opintovuosi: </a>
+                                    <a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Opintovuotesi: {{opintovuosi}}</a>
                                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                                           <form action={% url 'oma_vuosi' %} method="POST">
                                                 {% csrf_token %}

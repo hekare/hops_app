@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 import json
 
+#Opintojaksojen toteutus
 class opintojaksot (models.Model):
       tunniste = models.CharField(max_length=20, primary_key=True) #id, numero – ei kerro mitään
       koodi = models.CharField(max_length=20) #kurrsin koodi – kurssin lyhenne
@@ -20,6 +21,7 @@ class opintojaksot (models.Model):
       class Meta:
             verbose_name_plural = "Opintojaksot"
 
+#Käyttäjien valitsemat kurssit
 class valitut_kurssit (models.Model):
       opiskelija = models.ForeignKey(User, on_delete=models.CASCADE)
       kurssi = models.ForeignKey(opintojaksot, on_delete=models.CASCADE) #opintojakson id
@@ -34,6 +36,7 @@ class valitut_kurssit (models.Model):
             verbose_name_plural = "Valitut kurssit"
             unique_together = (("opiskelija", "kurssi"),)
 
+#Kyttäjien kuluvat opintovuodet
 class opinto_vuodet (models.Model):
       opiskelija = models.ForeignKey(User, on_delete=models.CASCADE)
       opintovuosi = models.IntegerField(null=True)

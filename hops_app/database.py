@@ -41,15 +41,18 @@ def load_data(request):
       print("Data updatet")
       return HttpResponseRedirect('home')
 
+#Opintojaksot taulun tyhjentäminen
 def clear_database(requests):
       opintojaksot.objects.all().delete()
       return HttpResponseRedirect('home')
 
+#Valitun kurssin poistaminen käyttäjän valinnoista
 def remove_course(request):
       kurssi = request.POST.get("remove")
       valitut_kurssit.objects.filter(opiskelija=request.user, kurssi=kurssi).delete()
       return HttpResponseRedirect("/list_view")
 
+#Kurssivalinnan lisääminen käyttäjän kursseihin
 def add_course(request):
       kurssi_id = request.POST.get('add')
       kurssi = opintojaksot.objects.get(tunniste=kurssi_id)
@@ -60,25 +63,28 @@ def add_course(request):
            url = "/list_view/?added=0"
       return HttpResponseRedirect(url)
 
+#Kurssin suoritusvuoden vaihtaminen
 def change_year(request):
       year = request.POST.get("vuosi")
       kurssi = request.POST.get("kurssi")
       valitut_kurssit.objects.filter(opiskelija=request.user, kurssi=kurssi).update(opinto_vuosi=year)
       return HttpResponseRedirect("/list_view")
 
+#Kurssin suoritusperiodin vaihtaminen
 def select_period(request):
       period = request.POST.get('periodi')
       kurssi = request.POST.get("kurssi")
       valitut_kurssit.objects.filter(opiskelija=request.user, kurssi=kurssi).update(periodi=period)
       return HttpResponseRedirect("/list_view")
 
-
+#Kurssin sisällyttäminen haluttuun opintokokonaisuuteen
 def select_module(request):
       module = request.POST.get('moduuli')
       kurssi = request.POST.get('kurssi')
       valitut_kurssit.objects.filter(opiskelija=request.user, kurssi=kurssi).update(opintokokonaisuus=module)
       return HttpResponseRedirect("/list_view")
 
+#Opiskelijan oman opintovuoden vaihtaminen
 def own_study_year(request):
       vuosi = request.POST.get('vuosi')
       opinto_vuodet.objects.get_or_create(opiskelija=request.user)
