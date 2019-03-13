@@ -1,13 +1,13 @@
 <li class="list-group-item p-2">
       <!--kurssin nimi ja opintopisteet-->
       <label class="flex-grow-1 bd-highlight pt-2 m-0">
-            {{kurssi.kurssi.koodi}}
+            {{kurssi.0.kurssi.koodi}}
             <br>
-            {{kurssi.kurssi}}
-            {% if kurssi.kurssi.nopat_min == kurssi.kurssi.nopat_max %}
-            ({{kurssi.kurssi.nopat_min}}
+            {{kurssi.0.kurssi.nimi}}
+            {% if kurssi.0.kurssi.nopat_min == kurssi.0.kurssi.nopat_max %}
+            ({{kurssi.0.kurssi.nopat_min}}
             {% else %}
-            ({{kurssi.kurssi.nopat_min}}–{{kurssi.kurssi.nopat_max}}
+            ({{kurssi.0.kurssi.nopat_min}}–{{kurssi.0.kurssi.nopat_max}}
             {%endif%}op.)
       </label>
       <div class="d-flex justify-content-end mt-2">
@@ -15,36 +15,37 @@
             <label class="mr-1 mt-1">Vuosi:</label>
             <form class="mr-2" action="change_year" method="post">
                   {% csrf_token %}
-                  <select class="form-control form-control-sm" name="vuosi" id="select_year_{{kurssi.kurssi.tunniste}}" onchange="this.form.submit()">
-                              <option value=None></option>
-                              <option value="1">1</option>
-                              <option value="2">2</option>
-                              <option value="3">3</option>
-                              <option value="4">4</option>
-                              <option value="5">5</option>
-                              <option value="6">6</option>
-                        </select>
-                        <input name="kurssi" type="hidden" value={{kurssi.kurssi.tunniste}}>
-                  </form>
+                  <select class="form-control form-control-sm" name="vuosi" id="select_year_{{kurssi.0.kurssi.koodi}}" onchange="this.form.submit()">
+                        <option value=None></option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                        <option value="6">6</option>
+                  </select>
+                  <input name="kurssi" type="hidden" value={{kurssi.0.kurssi.koodi}}>
+            </form>
             <script>
-                  document.getElementById("select_year_{{kurssi.kurssi.tunniste}}").value ="{{kurssi.opinto_vuosi}}";
+                  document.getElementById("select_year_{{kurssi.0.kurssi.koodi}}").value ="{{kurssi.0.opinto_vuosi}}";
             </script>
 
             <!--periodin valinta-->
             <label class="mr-1 mt-1">Periodi:</label>
             <form class="mr-auto" action="select_period" method="post">
                   {% csrf_token %}
-                  <select class="form-control form-control-sm" name="periodi" id="periodi{{kurssi.kurssi.tunniste}}" onchange="this.form.submit()">
+                  <select class="form-control form-control-sm" name="periodi" id="periodi{{kurssi.0.kurssi.koodi}}" onchange="this.form.submit()">
                         <option value=None></option>
-                        {% for periodi in kurssi.kurssi.get_periodit %}
-                        <option value={{periodi}}>{{periodi}}</option>
+                        {% for periodi in kurssi.1 %}
+                        <option value={{periodi.tunniste}}>{{periodi.periodit}}</option>
                         {% endfor %}
                   </select>
-                  <input name="kurssi" type="hidden" value={{kurssi.kurssi.tunniste}}>
+                  <input name="kurssi" type="hidden" value={{kurssi.0.kurssi.koodi}}>
             </form>
             <script>
-                  document.getElementById("periodi{{kurssi.kurssi.tunniste}}").value ="{{kurssi.periodi}}";
+                  document.getElementById("periodi{{kurssi.0.kurssi.koodi}}").value ="{{kurssi.0.toteutus.tunniste}}";
             </script>
+
 
             <!--opintokokonaisuuden valinta-->
             <div class="dropdown">
@@ -52,19 +53,20 @@
                   <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
                         <form class="mr-auto" action="select_module" method="post">
                               {% csrf_token %}
-                              {% for moduuli in kurssi.get_modules %}
+                              {% for moduuli in kurssi.0.get_modules %}
                               <button class="dropdown-item" type="submit" name="moduuli" value={{moduuli}}>{{moduuli}}</button>
                               {% endfor %}
-                              <input name="kurssi" type="hidden" value={{kurssi.kurssi.tunniste}}>
+                              <input name="kurssi" type="hidden" value={{kurssi.0.kurssi.koodi}}>
                         </form>
                   </div>
-          </div>
-
+            </div>
+            
             <!--kurssin poistaminen-->
             <form action="remove" method="post">
                   {% csrf_token %}
-                  <button class="btn btn-outline-danger" name="remove" value={{kurssi.kurssi.tunniste}}>Poista</button> 
+                  <button class="btn btn-outline-danger" name="remove" value={{kurssi.0.kurssi.koodi}}>Poista</button> 
             </form>
+        
       </div>
 
 </li>

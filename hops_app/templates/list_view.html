@@ -35,17 +35,17 @@
             <div class="card border-secondary" style="width: 60rem;">
                   <h5 class="card-header d-flex bg-secondary text-white">
                         <div class="mr-auto">Perusopinnot</div>
-                        {% if perusopinnot.1 == None %}
+                        {% if nopat.perusopinnot.kurssi__nopat_min__sum == None %}
                         0
-                        {% elif perusopinnot.1 == perusopinnot.2 %}
-                        {{perusopinnot.2}}
+                        {% elif nopat.perusopinnot.kurssi__nopat_min__sum == nopat.perusopinnot.kurssi__nopat_max__sum %}
+                        {{nopat.perusopinnot.kurssi__nopat_min__sum}}
                         {% else %}
-                        {{perusopinnot.1}}–{{perusopinnot.2}}
+                        {{nopat.perusopinnot.kurssi__nopat_min__sum}}–{{nopat.perusopinnot.kurssi__nopat_max__sum}}
                         {% endif %}op.
                   </h5>
                   <div class="card-body">
                         <ul class="list-group list-group-flush">                  
-                        {% for kurssi in perusopinnot.0 %}
+                        {% for kurssi in valitut.perusopinnot %}
                               {% include 'chosen_courses.html' %}
                         {% endfor %}
                         </ul>
@@ -55,17 +55,17 @@
             <div class="card border-secondary" style="width: 60rem;">
                   <h5 class="card-header d-flex bg-secondary text-white">
                         <div class="mr-auto">Pääaine</div>                  
-                        {% if pääaine.1 == None %}
+                        {% if nopat.pääaine.kurssi__nopat_min__sum == None %}
                         0
-                        {% elif pääaine.1 == pääaine.2 %}
-                        {{pääaine.2}}
+                        {% elif nopat.pääaine.kurssi__nopat_min__sum == nopat.pääaine.kurssi__nopat_max__sum %}
+                        {{nopat.pääaine.kurssi__nopat_min__sum}}
                         {% else %}
-                        {{pääaine.1}}–{{pääaine.2}}
+                        {{nopat.pääaine.kurssi__nopat_min__sum}}–{{nopat.pääaine.kurssi__nopat_max__sum}}
                         {% endif %}op.
                   </h5>
                   <div class="card-body">
                         <ul class="list-group list-group-flush">                  
-                        {% for kurssi in pääaine.0 %}
+                        {% for kurssi in valitut.pääaine %}
                               {% include 'chosen_courses.html' %}
                         {% endfor %}
                         </ul>
@@ -75,17 +75,17 @@
             <div class="card border-secondary" style="width: 60rem;">
                   <h5 class="card-header d-flex bg-secondary text-white">
                   <div class="mr-auto">Sivuaine</div>
-                  {% if sivuaine.1 == None %}
+                  {% if nopat.sivuaine.kurssi__nopat_min__sum == None %}
                   0
-                  {% elif sivuaine.1 == sivuaine.2 %}
-                  {{sivuaine.2}}
+                  {% elif nopat.sivuaine.kurssi__nopat_min__sum == nopat.sivuaine.kurssi__nopat_max__sum %}
+                  {{nopat.sivuaine.kurssi__nopat_min__sum}}
                   {% else %}
-                  {{sivuaine.1}}–{{sivuaine.2}}
+                  {{nopat.sivuaine.kurssi__nopat_min__sum}}–{{nopat.sivuaine.kurssi__nopat_max__sum}}
                   {% endif %}op.
                   </h5>
                   <div class="card-body">
                         <ul class="list-group list-group-flush">                  
-                        {% for kurssi in sivuaine.0 %}
+                        {% for kurssi in valitut.sivuaine %}
                               {% include 'chosen_courses.html' %}
                         {% endfor %}
                         </ul>
@@ -95,17 +95,17 @@
             <div class="card border-secondary" style="width: 60rem;">
                   <h5 class="card-header d-flex bg-secondary text-white">
                   <div class="mr-auto">Täydentävät opinnot</div>
-                  {% if vapaasti_valittavat.1 == None %}
+                  {% if nopat.vapaat.kurssi__nopat_min__sum == None %}
                   0
-                  {% elif vapaasti_valittavat.1 == vapaasti_valittavat.2 %}
-                  {{vapaasti_valittavat.2}}
+                  {% elif nopat.vapaat.kurssi__nopat_min__sum == nopat.vapaat.kurssi__nopat_max__sum %}
+                  {{nopat.vapaat.kurssi__nopat_min__sum}}
                   {% else %}
-                  {{vapaasti_valittavat.1}}–{{vapaasti_valittavat.2}}
+                  {{nopat.vapaat.kurssi__nopat_min__sum}}–{{nopat.vapaat.kurssi__nopat_max__sum}}
                   {% endif %}op.
                   </h5>
                   <div class="card-body">
                         <ul class="list-group list-group-flush">                  
-                        {% for kurssi in vapaasti_valittavat.0 %}
+                        {% for kurssi in valitut.vapaat %}
                               {% include 'chosen_courses.html' %}
                         {% endfor %}
                         </ul>
@@ -134,7 +134,7 @@
                               <form action="add" method="post">
                                     {% csrf_token %}
                                     <div class="form-goup">
-                                          <button class="btn btn-outline-success align-middle mr-2" name="add" value={{kurssi.tunniste}}>+</button> 
+                                          <button class="btn btn-outline-success align-middle mr-2" name="add" value={{kurssi.koodi}}>+</button> 
                                           <label class="align-middle pt-1" style="width: 18rem">{{kurssi.nimi}}</label>
                                     </div>
                               </form>
