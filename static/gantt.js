@@ -5,9 +5,9 @@ for  (i = 0; i < valitut.length; i++) {
 tasks.sort(function(a, b) {
       return a.endDate - b.endDate;
 });
+var format = "%m.%Y";
 
-var format = "%B %Y";
-var gantt = d3.gantt().taskTypes(names).tickFormat(format).height(names.length*50);
+var gantt = d3.gantt().taskTypes(names).tickFormat(format).height(names.length*50).width(1100);
 gantt(tasks);
 gantt.timeDomain([ d3.time.day.offset(getEndDate(), -7), getEndDate() ]);
 
@@ -18,3 +18,6 @@ function getEndDate() {
       }
       return lastEndDate;
 }
+
+
+
