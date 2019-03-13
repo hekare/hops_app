@@ -3,8 +3,8 @@ from .models import opintojaksot, valitut_kurssit, opinto_vuodet, toteutukset
 import json, requests
 from django.http import HttpResponseRedirect, HttpResponse
 
+#Funktio lataa yliopistun opintojaksot rajapinnasta ja siirtää tiedot tietokantaan.
 def load_data(request):
-      #Funktio lataa yliopistun opintojaksot rajapinnasta ja siirtää tiedot tietokantaan.
       print("Updating data...")
       import os
       from django.conf import settings
@@ -15,6 +15,7 @@ def load_data(request):
       data = response.json()
       
       #datan siirto tietokantaan
+      MONTHS = ["", "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
       for kurssi in data:
             try:
                   #Tallenna opintojakso tietokantaan, jos olemassa -> päivitä kentät
@@ -36,28 +37,36 @@ def load_data(request):
                         oppiaine = kurssi['subjectCode'],
                   )
 
-            #Toteutuskerran lisäys,jos olemassa -> päivitys
+            #Toetutuksen kenttien muokkaus sopivaksi
+            #Periodit merkkijonoksi muotoon alkuperiodi–loppuperiodi
             if(kurssi['studyPeriods'] == None or len(kurssi['studyPeriods']) == 0):
                   periodit = None
             elif(len(kurssi['studyPeriods']) == 1):
                   periodit = str(kurssi['studyPeriods'][0])
             else:
                   periodit = str(kurssi['studyPeriods'][0])+"–"+str(kurssi['studyPeriods'][-1])
-            try:
-                  toteutukset.objects.create(
-                        tunniste = kurssi['id'],
-                        koodi = opintojaksot.objects.filter(koodi=kurssi['code']).get(),
-                        periodit = periodit,
-                        aloituspvm = kurssi['startDate'],
-                        lopetuspvm = kurssi['endDate'],
-                  )
-            except:
-                  toteutukset.objects.filter(tunniste=kurssi['id']).update(
-                        koodi = opintojaksot.objects.filter(koodi=kurssi['code']).get(),
-                        periodit = periodit,
-                        aloituspvm = kurssi['startDate'],
-                        lopetuspvm = kurssi['endDate'],
-                  )
+
+            #Päivämäärä "YYYY-MM-DD" -> "MMM DD"
+            startDate = MONTHS[int(kurssi['startDate'][5:-3])] + " " + kurssi['startDate'][-2:]
+            endDate = MONTHS[int(kurssi['endDate'][5:-3])] + " " + kurssi['endDate'][-2:]
+            
+            if startDate != endDate: #Toteutuksen aikataulua ei tiedetä, joten ei lisätä toteutuksiin
+                  #Toteutuskerran lisäys,jos olemassa -> päivitys
+                  try:
+                        toteutukset.objects.create(
+                              tunniste = kurssi['id'],
+                              koodi = opintojaksot.objects.filter(koodi=kurssi['code']).get(),
+                              periodit = periodit,
+                              aloituspvm = startDate,
+                              lopetuspvm = endDate,
+                        )
+                  except:
+                        toteutukset.objects.filter(tunniste=kurssi['id']).update(
+                              koodi = opintojaksot.objects.filter(koodi=kurssi['code']).get(),
+                              periodit = periodit,
+                              aloituspvm = startDate,
+                              lopetuspvm = endDate,
+                        )
 
       print("Data updatet")
       return HttpResponseRedirect('home')

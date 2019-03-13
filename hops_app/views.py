@@ -52,30 +52,52 @@ def home(request):
             vuosi = (opinto_vuodet.objects.filter(opiskelija=request.user).get()).opintovuosi
       except:
             vuosi = "Ei valittu"
-      print(vuosi)
       args={
             'opintovuosi': vuosi,
       }
       return render(request, 'home.html', args)
 
 #Aikataulusivun lataaminen
-PERIODIAJAT = [["Sep 01","Oct 20"],["Oct 20","Dec 24"],["Jan 01","Mar 01"],["Mar 01","May 15"]]
 @login_required(login_url='/')
 def aikataulu(request):
       kurssi_nimet = list(valitut_kurssit.objects.filter(opiskelija=request.user).values_list("kurssi__koodi", flat=True))
-      valitut__ = valitut_kurssit.objects.filter(opiskelija=request.user)
+      valitut_toteutukset = valitut_kurssit.objects.filter(opiskelija=request.user)
       valitut = []
       try:
-            vuosi = (opinto_vuodet.objects.filter(opiskelija=request.user).get()).opintovuosi
+            vuosi = int((opinto_vuodet.objects.filter(opiskelija=request.user).get()).opintovuosi)
       except:
             vuosi = "Ei valittu"
 
       today = datetime.today()
 
-      for kurssi in valitut__:
-            if(kurssi.periodi != None and kurssi.opinto_vuosi != None):
-                  valitut.append([kurssi.kurssi.koodi, PERIODIAJAT[kurssi.periodi-1][0]+" 2013", PERIODIAJAT[kurssi.periodi-1][1]+" 2013"])
-
+      for kurssi in valitut_toteutukset:
+            if(kurssi.toteutus != None and kurssi.opinto_vuosi != None):
+                  start = datetime.strptime(kurssi.toteutus.aloituspvm, "%b %d")
+                  end = datetime.strptime(kurssi.toteutus.lopetuspvm, "%b %d")
+                  if today.month >=7:
+                        if start.month >= 7:
+                              vuosiStart = today.year
+                        else:
+                              vuosiStart = today.year + 1
+                        if end.month >= 7:
+                              vuosiEnd = today.year
+                        else:
+                              vuosiEnd = today.year +1
+                  else:
+                        if start.month > 7:
+                              vuosiStart = today.year - 1 
+                        else:
+                              vuosiStart = today.year
+                        if end.month >= 7:
+                              vuosiEnd = today.year - 1
+                        else:
+                              vuosiEnd = today.year
+                  
+                  erotus = kurssi.opinto_vuosi - vuosi
+                  vuosiEnd += erotus
+                  vuosiStart += erotus
+                  valitut.append([kurssi.kurssi.koodi, kurssi.toteutus.aloituspvm+" "+str(vuosiStart), kurssi.toteutus.lopetuspvm+ " "+str(vuosiEnd)])
+      print(valitut)
       
       args = {
             'nimet': json.dumps(kurssi_nimet),
@@ -108,17 +130,6 @@ def lista(request):
       elif request.GET.get("added") == "1":
             lisays_onnistui = True
 
-      
-      #Valittujen kurssien hakeminen
-      '''
-      nopat_perusopinnot = valitut_kurssit.objects.filter(opiskelija=request.user, opintokokonaisuus="perusopinnot").aggregate(Sum('kurssi__nopat_min'), Sum('kurssi__nopat_max'))
-
-      nopat_pääaine = valitut_kurssit.objects.filter(opiskelija=request.user, opintokokonaisuus="pääaine").aggregate(Sum('kurssi__nopat_min'), Sum('kurssi__nopat_max'))
-
-      nopat_sivuaine = valitut_kurssit.objects.filter(opiskelija=request.user, opintokokonaisuus="sivuaine").aggregate(Sum('kurssi__nopat_min'), Sum('kurssi__nopat_max'))
-
-      nopat_valittavat = valitut_kurssit.objects.filter(opiskelija=request.user, opintokokonaisuus="täydentävät").aggregate(Sum('kurssi__nopat_min'), Sum('kurssi__nopat_max'))
-      '''
       valitut_kurssit = hae_valitut_kurssit(request)
       nopat_sum = laske_nopat(request)
 
@@ -139,7 +150,6 @@ def lista(request):
             }
       
       return render(request, 'list_view.html', args)
-
 
 def hae_valitut_kurssit(request):
       #palautettava tietorakennen  käyttäjän valitsemista opinnoista

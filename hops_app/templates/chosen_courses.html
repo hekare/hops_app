@@ -16,7 +16,7 @@
             <form class="mr-2" action="change_year" method="post">
                   {% csrf_token %}
                   <select class="form-control form-control-sm" name="vuosi" id="select_year_{{kurssi.0.kurssi.koodi}}" onchange="this.form.submit()">
-                        <option value=None></option>
+                        <option value=None>–</option>
                         <option value="1">1</option>
                         <option value="2">2</option>
                         <option value="3">3</option>
@@ -35,7 +35,7 @@
             <form class="mr-auto" action="select_period" method="post">
                   {% csrf_token %}
                   <select class="form-control form-control-sm" name="periodi" id="periodi{{kurssi.0.kurssi.koodi}}" onchange="this.form.submit()">
-                        <option value=None></option>
+                        <option value=None>–</option>
                         {% for periodi in kurssi.1 %}
                         <option value={{periodi.tunniste}}>{{periodi.periodit}}</option>
                         {% endfor %}
@@ -43,7 +43,11 @@
                   <input name="kurssi" type="hidden" value={{kurssi.0.kurssi.koodi}}>
             </form>
             <script>
-                  document.getElementById("periodi{{kurssi.0.kurssi.koodi}}").value ="{{kurssi.0.toteutus.tunniste}}";
+                  if("{{kurssi.0.toteutus.tunniste}}" == ""){
+                        document.getElementById("periodi{{kurssi.0.kurssi.koodi}}").value="None";
+                  }else{
+                        document.getElementById("periodi{{kurssi.0.kurssi.koodi}}").value ="{{kurssi.0.toteutus.tunniste}}";
+                  }
             </script>
 
 
