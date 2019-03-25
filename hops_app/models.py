@@ -15,12 +15,6 @@ class opintojaksot (models.Model):
       #periodit = models.CharField(max_length=20, null=True) #string muotoinen lista kursseista
       def __str__(self):
             return self.nimi
-      '''
-      def get_periodit(self): #palauttaa periodit listana
-            if self.periodit == None:
-                  return None
-            return self.periodit.replace("[", "").replace("]", "").split(",")
-      '''
       class Meta:
             verbose_name_plural = "Opintojaksot"
 

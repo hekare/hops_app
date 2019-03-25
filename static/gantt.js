@@ -7,7 +7,7 @@ tasks.sort(function(a, b) {
 });
 var format = "%m.%Y";
 
-var gantt = d3.gantt().taskTypes(names).tickFormat(format).height(names.length*50).width(1100);
+var gantt = d3.gantt().taskTypes(names).tickFormat(format).height(names.length*50).width(1200);
 gantt(tasks);
 gantt.timeDomain([ d3.time.day.offset(getEndDate(), -7), getEndDate() ]);
 
@@ -18,6 +18,3 @@ function getEndDate() {
       }
       return lastEndDate;
 }
-
-
-

@@ -96,8 +96,7 @@ def aikataulu(request):
                   erotus = kurssi.opinto_vuosi - vuosi
                   vuosiEnd += erotus
                   vuosiStart += erotus
-                  valitut.append([kurssi.kurssi.koodi, kurssi.toteutus.aloituspvm+" "+str(vuosiStart), kurssi.toteutus.lopetuspvm+ " "+str(vuosiEnd)])
-      print(valitut)
+                  valitut.append([kurssi.kurssi.koodi, kurssi.toteutus.aloituspvm+" "+str(vuosiStart), kurssi.toteutus.lopetuspvm+ " "+str(vuosiEnd), (kurssi.opintokokonaisuus).replace("ä", "a")])
       
       args = {
             'nimet': json.dumps(kurssi_nimet),
