@@ -3,6 +3,15 @@
 {% block content %}
 
 <div class="d-flex justify-content-center">
+      <!-- Huomautuv opintovuoden valitsemisesta, mikäli ei valittuna -->
+      {% if opintovuosi == None %}
+      <div id="alert">
+            <div class="card" style="width: 60rem;">
+                  <h5 class="card-header text-center bg-success">Muista valita opintovuotesi oikeasta yläkulmasta, jotta aikataulut näkyvät oikein!</h5>
+            </div>
+            <br>
+      </div>
+      {% endif %}
       <div class="px-2">
             <div class="card" style="width: 60rem;">
                   <h5 class="card-header">Tervetuloa {{user.username}}!</h5>
