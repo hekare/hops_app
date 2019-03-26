@@ -98,12 +98,16 @@ def aikataulu(request):
                   vuosiStart += erotus
                   valitut.append([kurssi.kurssi.koodi, kurssi.toteutus.aloituspvm+" "+str(vuosiStart), kurssi.toteutus.lopetuspvm+ " "+str(vuosiEnd), (kurssi.opintokokonaisuus).replace("ä", "a"), kurssi.kurssi.nimi, kurssi.kurssi.nopat_min])
       
-      nopat = valitut_kurssit.objects.filter(opiskelija=request.user).aggregate(Sum('kurssi__nopat_max'))
+      noppia_list = list(valitut_kurssit.objects.filter(opiskelija=request.user).values('opinto_vuosi').annotate(Sum('kurssi__nopat_min')))
+      noppia = [0, 0, 0, 0, 0, 0]
+      for kurssi in noppia_list:
+            if kurssi['opinto_vuosi'] != None:
+                  noppia[kurssi['opinto_vuosi']-1] =+ kurssi['kurssi__nopat_min__sum']
       args = {
             'nimet': json.dumps(kurssi_nimet),
             'valitut': json.dumps(valitut),
             'opintovuosi': vuosi,
-            'noppia': nopat["kurssi__nopat_max__sum"],
+            'noppia': json.dumps(noppia),
       }
       return render(request, 'schedule_view.html', args)
 

@@ -1,8 +1,8 @@
 {% extends 'base.html' %}
 
 {% block head %}
-<link type="text/css" href="http://mbostock.github.io/d3/style.css" rel="stylesheet" />
 <link type="text/css" href="/static/gantt-oma.css" rel="stylesheet" />
+<link type="text/css" href="/static/bars.css" rel="stylesheet" />
 {% endblock %}
 
 {% block content %}
@@ -15,7 +15,7 @@
       <div class="d-flex justify-content-center mb-3">
             <div class="px-2">
                   <div class="card" style="width: 80rem;">
-                        <h5 class="card-header">Aikataulutetut kurssit:</h5>
+                        <h5 class="card-header bg-secondary text-white">Aikataulutetut kurssit</h5>
                         <div class="card-body" id="div-gantt">
                               <!--gantt-kaavio-->
                               <script>
@@ -49,13 +49,25 @@
       <div class="d-flex justify-content-center">
             <!-- Opiskelutahti pylväskaavio -->
             <div class="card mr-2" style="width: 50rem;">
-                  <h5 class="card-header">Opiskelutahti vs. muut</h5>
+                  <h5 class="card-header bg-secondary text-white">Vuosittainen opintokuorma (op.)</h5>
                   <div class="card-body" id="bar-chart"></div>
+                  <script>                        
+                        var nopat = {{noppia|safe}};
+                        var kuormaData=[
+                              {State:'1. vuosi',total:nopat[0]},
+                              {State:'2. vuosi',total:nopat[1]},
+                              {State:'3. vuosi',total:nopat[2]},
+                              {State:'4. vuosi',total:nopat[3]},
+                              {State:'5. vuosi',total:nopat[4]},
+                              {State:'6. vuosi',total:nopat[5]},
+                        ];
+                  </script>
+                  <script src="/static/bars.js"></script>
             </div>
 
             <!-- Edistymisympyrä -->
             <div class="card" style="width: 29.5rem;">
-                  <h5 class="card-header">Opintoja suoritettuna</h5>
+                  <h5 class="card-header bg-secondary text-white">Opintoja suoritettuna (op.)</h5>
                   <div class="card-body" id="pie"></div>
                   <script>
                         var nopat = 0;
