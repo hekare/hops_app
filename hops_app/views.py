@@ -96,7 +96,7 @@ def aikataulu(request):
                   erotus = kurssi.opinto_vuosi - vuosi
                   vuosiEnd += erotus
                   vuosiStart += erotus
-                  valitut.append([kurssi.kurssi.koodi, kurssi.toteutus.aloituspvm+" "+str(vuosiStart), kurssi.toteutus.lopetuspvm+ " "+str(vuosiEnd), (kurssi.opintokokonaisuus).replace("ä", "a"), kurssi.kurssi.nimi])
+                  valitut.append([kurssi.kurssi.koodi, kurssi.toteutus.aloituspvm+" "+str(vuosiStart), kurssi.toteutus.lopetuspvm+ " "+str(vuosiEnd), (kurssi.opintokokonaisuus).replace("ä", "a"), kurssi.kurssi.nimi, kurssi.kurssi.nopat_min])
       
       nopat = valitut_kurssit.objects.filter(opiskelija=request.user).aggregate(Sum('kurssi__nopat_max'))
       args = {

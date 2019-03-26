@@ -15,7 +15,7 @@ for  (i = 0; i < valitut.length; i++) {
       }else{
             var status = "RUNNING"
       }
-      tasks.push({"taskName":valitut[i][0], "startDate":start,"endDate":end, "status":status, "courseName":valitut[i][4]});
+      tasks.push({"taskName":valitut[i][0], "startDate":start,"endDate":end, "status":status, "courseName":valitut[i][4], "nopat":valitut[i][5]});
 }
 tasks.sort(function(a, b) {
       return a.endDate - b.endDate;
@@ -23,7 +23,7 @@ tasks.sort(function(a, b) {
 var format = "%m.%Y";
 
 
-var gantt = d3.gantt().taskTypes(names).taskStatus(courseStatus).tickFormat(format).height(names.length*50).width(1200);
+var gantt = d3.gantt().taskTypes(names).taskStatus(courseStatus).tickFormat(format).height(names.length*50).width(1150);
 gantt(tasks);
 //gantt.timeDomainMode("fit")
 gantt.timeDomain([ d3.time.day.offset(getEndDate(), -7), getEndDate() ]);
@@ -44,6 +44,7 @@ function hoverOver (ctx, bar) {
       var dimBar = ctx.getBoundingClientRect()
 
       d3.select('#tooltip-name').text(bar.courseName)
+      d3.select('#tooltip-nopat').text(bar.nopat)
       d3.select('#tooltip-start-day').text(bar.startDate.getDate())
       d3.select('#tooltip-start-month').text(bar.startDate.getMonth()+1)
       d3.select('#tooltip-start-year').text(bar.startDate.getFullYear())

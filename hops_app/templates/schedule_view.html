@@ -7,35 +7,43 @@
 
 {% block content %}
 <script type="text/javascript" src="http://d3js.org/d3.v3.min.js"></script>
-<script type="text/javascript" src="http://static.mentful.com/gantt-chart-d3v2.js"></script>
-<script>
-      var names = {{nimet|safe}};
-      var valitut = {{valitut|safe}};
-</script>
+<!--script type="text/javascript" src="http://static.mentful.com/gantt-chart-d3v2.js"></script-->
+
 
 <div class="d-flex justify-content-center"></div>
       <!--gantt-kaavio otsikko -->
-      <div class="d-flex justify-content-center">
+      <div class="d-flex justify-content-center mb-3">
             <div class="px-2">
                   <div class="card" style="width: 80rem;">
-                        <h5 class="card-header">Aikataulutetut kurssit</h5>
+                        <h5 class="card-header">Aikataulutetut kurssit:</h5>
+                        <div class="card-body" id="div-gantt">
+                              <!--gantt-kaavio-->
+                              <script>
+                                    var names = {{nimet|safe}};
+                                    var valitut = {{valitut|safe}};
+                              </script>
+                              <script type="text/javascript" src="/static/d3gantt.js"></script>
+                              <script type="text/javascript" src="/static/gantt.js"></script>
+                              <!-- tooltip kurssin tarkemmat tiedot-->
+                              <div id="tooltip" class="tooltip" style="opacity: 0">
+                                    <span id="tooltip-name"></span>: min <span id="tooltip-nopat"></span>op.
+                                    <br>
+                                    <span id="tooltip-start-day">
+                                    </span>.<span id="tooltip-start-month">
+                                    </span>.<span id="tooltip-start-year">
+                                    </span> – <span id="tooltip-end-day">
+                                    </span>.<span id="tooltip-end-month">
+                                    </span>.<span id="tooltip-end-year"></span>
+                              </div>
+                        </div>
+                        <div class="ml-5 mb-2 ">
+                        Vihreä: kurssi on suoritettu | 
+                        Vaaleanvihreä: kurssi on käynnissä |
+                        Punainen: kurssi alkaa myöhemmin
+                        </div>
                   </div>
-                  Vihreä: kurssi on suoritettu.
-                  Vaaleanvihreä: kurssi on käynnissä.
-                  Punainen: kurssi alkaa myöhemmin.
+
             </div>
-      </div>
-      <!--gantt-kaavio-->
-      <script type="text/javascript" src="/static/gantt.js"></script>
-      <div id="tooltip" class="tooltip" style="opacity: 0">
-            <span id="tooltip-name"></span>
-            <br>
-            <span id="tooltip-start-day">
-            </span>.<span id="tooltip-start-month">
-            </span>.<span id="tooltip-start-year">
-            </span> – <span id="tooltip-end-day">
-            </span>.<span id="tooltip-end-month">
-            </span>.<span id="tooltip-end-year"></span>
       </div>
 
       <div class="d-flex justify-content-center">
@@ -44,20 +52,28 @@
                   <h5 class="card-header">Opiskelutahti vs. muut</h5>
                   <div class="card-body" id="bar-chart"></div>
             </div>
+
             <!-- Edistymisympyrä -->
-            <div class="card" style="width: 29rem;">
+            <div class="card" style="width: 29.5rem;">
                   <h5 class="card-header">Opintoja suoritettuna</h5>
                   <div class="card-body" id="pie"></div>
                   <script>
-                        nopat = {{noppia}};
-                        kandiin = 180 - {{noppia}};
+                        var nopat = 0;
+                        for(kurssi in tasks){ //tasks sisältää tiedot kaiksita valituista kursseista päivämäärineen. Alkuperäinen sijainti gantt.js
+                              //Laskee jo päättyneiden kurssien nopat yhteen suoritetuiksi opinnoiksi.
+                              if(tasks[kurssi].endDate < today){ //today muuttujassa tämä päivämäärä, muuttuja luotu tiedostossa gantt.js
+                                    nopat += tasks[kurssi].nopat;
+                              }
+                        }
+                        kandiin = 180 - nopat;
                         if(kandiin < 0){
                               kandiin = 0;
-                              maisteriksi = 300 - {{noppia}};
+                              maisteriksi = 300 - nopat;
                               if(maisteriksi < 0){maisteriksi = 0;}
                         }else{
                               maisteriksi = 120;
                         }
+
                         var dataSet = [
                               {"legendLabel":"Suoritettu", "magnitude": nopat}, 
                               {"legendLabel":"Kandiin", "magnitude":kandiin}, 
