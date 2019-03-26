@@ -25,7 +25,6 @@ var format = "%m.%Y";
 
 var gantt = d3.gantt().taskTypes(names).taskStatus(courseStatus).tickFormat(format).height(names.length*50).width(1150);
 gantt(tasks);
-//gantt.timeDomainMode("fit")
 gantt.timeDomain([ d3.time.day.offset(getEndDate(), -7), getEndDate() ]);
 
 function getEndDate() {

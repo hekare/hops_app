@@ -72,8 +72,8 @@ function dashboard(id, fData){
             return hG;
       }
 
-      var sF = fData.map(function(d){return [d.State,d.total];}); // calculate total frequency by state for all segment.
-      var hG = histoGram(sF); // create the histogram.
+      var sF = fData.map(function(d){return [d.State,d.total];});
+      var hG = histoGram(sF);
 }
 
 dashboard('#bar-chart',kuormaData);
